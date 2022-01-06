@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="DTU" uuid="85f10ed9-a0b5-4268-93e3-e15077d1d0db">
+    <data-source source="LOCAL" name="SP3" uuid="c152f759-cadc-4477-b128-dafc3892aa9c">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://130.225.170.176:3306/listedb2</jdbc-url>
+      <jdbc-url>jdbc:mysql://130.225.170.204:3306</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

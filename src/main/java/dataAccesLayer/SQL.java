@@ -17,8 +17,8 @@ public class SQL {
         return SQLOBJ;
     }
 
-    private final String url = "jdbc:mysql://130.225.170.176:3306/listedb2";
-    private final String DatabaseUser = "test2";
+    private final String url = "jdbc:mysql://130.225.170.199:3306/sys";
+    private final String DatabaseUser = "gruppe2";
     private final String DatabasePassword = System.getenv("dbpass"); //tomcat system startups
 
     private Connection myConn;

@@ -12,8 +12,6 @@ passlabel.addEventListener('keyup', (e) =>
     }
 })
 
-
-
 function togglevisibiliy() {
     const passwordInput = document.getElementById("password")
     const icon = document.getElementById("icon")

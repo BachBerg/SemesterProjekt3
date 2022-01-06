@@ -107,7 +107,6 @@ function nextdate() {
 function prevdate() {
     date.setMonth(date.getMonth() - 1);
     makecalender(date);
-
 }
 
 let i = 0;
@@ -155,8 +154,6 @@ function formfetch() {
             throw Error(await resp.text());
         }
     }).then(text => alert(text)).catch(Error => alert(Error));
-
-
 
 }
 
@@ -247,8 +244,6 @@ function noWeekend() {
 window.onload = function () {
     showTime()
 }
-
-//var timeApi = 'http://worldtimeapi.org/api/timezone/Europe/Copenhagen';
 
 
 function showTime() {
