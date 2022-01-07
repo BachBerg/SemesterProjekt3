@@ -39,38 +39,23 @@ async function login() {
     //const object = Object.fromEntries(formData);
     console.log(user + pass)
     //Bruger fetch-API til at sende data - POST. JSON.stringify for at serialisere objekt til string.
-    const res = await fetch("/data/login?" + new URLSearchParams({
+    const res = await fetch("http://localhost:8080/Semesterprojekt3_war/data/login?" + new URLSearchParams({
         username: user,
         password: pass,
     }, {
         method: "GET"
     }));
 
+
     // hvis vi får en token, gemmer vi den i browserens localstorage
     const token = await res.text();
     localStorage.setItem("token", token);
+
     //For ekstra krymmel fisker vi en bruger ud af tokenen
     const payload = window.atob(token.split(".")[1]);
     const payloadJson = JSON.parse(payload);
     localStorage.setItem("user", payloadJson.username);
+
     //Viderestil til den rigtige side!
     window.location.href = "StartSide.html"
 }
-
-/*
-function login() {
-    user = document.getElementById("username").value;
-    pass = document.getElementById("password").value;
-    fetch("/IT3_Delopgave_2_war/data/login?" + new URLSearchParams({
-            username: user,
-            password: pass,
-        }
-    )).then(async resp => {
-        if (resp.status >= 200 && resp.status <= 299) {
-            return resp.text();
-        } else {
-            throw Error(await resp.text());
-        }
-    }).then(data => validate(data)).catch(Error =>alert(Error));
-
-}*/

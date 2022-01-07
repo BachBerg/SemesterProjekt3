@@ -3,13 +3,8 @@ package controller;
 import dataAccesLayer.SQL;
 import model.LoginData;
 import model.User;
-
+import org.mindrot.jbcrypt.BCrypt;
 import javax.ws.rs.WebApplicationException;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.sql.SQLException;
 
 public class LoginController {
@@ -27,48 +22,26 @@ public class LoginController {
         try {
             // sql kald der kontrollere om brugeren eksitere
             String brugerListe = SQL.getSqlOBJ().hentBrugerListe(loginData.getUsername());
+            String[] opdelt = brugerListe.split("\\|");
 
             // kontrol af login og generer token
-            if (loginVal(brugerListe, loginData.getPassword())) {
+            if (hashControl(loginData.getPassword(), opdelt[1])) {
                 User user = new User(loginData);
                 return JWTHandler.generateJwtToken(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        throw new WebApplicationException("fejl", 401);
+        throw new WebApplicationException(401);
     }
 
-    public boolean loginVal(String brugerliste, String pass) {
-        if (brugerliste.length() > 1) {
-            String[] opdelt = brugerliste.split("\\|");
-            int salt = Integer.parseInt(opdelt[2]);
-            String hashcheck = generateHash(pass, salt);
-            if (opdelt[1].equals(hashcheck)) {
-                return true;
-            }
-        }
-        return false;
+    /* metode der blev brugt til at hashe kodeordene */
+    public static String generateHash(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt(10));
     }
 
-    public static String generateHash(String pass, int salt) {
-        try {
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            pass += String.valueOf(salt);
-            md5.update(StandardCharsets.UTF_8.encode(pass));
-            return String.format("%032x", new BigInteger(1, md5.digest()));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return pass;
-    }
-
-    public static int getSalt() {
-        byte[] salt = new byte[20];
-        SecureRandom sr = new SecureRandom();
-        sr.nextBytes(salt);
-        int saltint = salt[4];
-        return saltint;
+    public static boolean hashControl(String password, String hashedPassword) {
+        return BCrypt.checkpw(password, hashedPassword);
     }
 }
 
