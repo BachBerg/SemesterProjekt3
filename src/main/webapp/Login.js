@@ -5,9 +5,8 @@ visibilityListen.addEventListener('click', togglevisibiliy) //brug functionen hv
 var passlabel = document.getElementById('password')
 var btn = document.getElementById('btn')
 
-passlabel.addEventListener('keyup', (e) =>
-{
-    if(e.keyCode===13){
+passlabel.addEventListener('keyup', (e) => {
+    if (e.keyCode === 13) {
         btn.click();
     }
 })
@@ -39,7 +38,7 @@ async function login() {
     //const object = Object.fromEntries(formData);
     console.log(user + pass)
     //Bruger fetch-API til at sende data - POST. JSON.stringify for at serialisere objekt til string.
-    const res = await fetch("http://localhost:8080/Semesterprojekt3_war/data/login?" + new URLSearchParams({
+    const res = await fetch("/data/login?" + new URLSearchParams({
         username: user,
         password: pass,
     }, {

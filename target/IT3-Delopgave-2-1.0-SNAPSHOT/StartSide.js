@@ -1,5 +1,7 @@
 let tok = localStorage.getItem("token");
-if (!tok){window.location.href="LoginSide.html"}
+if (!tok) {
+    window.location.href = "LoginSide.html"
+}
 
 function hentAftaleFecth(from, to) {
     let fra = from;
@@ -67,7 +69,7 @@ function makecalender(date) {
     const dates = document.querySelector(".dates");
     const lastdates = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 
-    document.getElementById("actualmonth").innerText = mymonth +"    " +date.getFullYear();
+    document.getElementById("actualmonth").innerText = mymonth + "    " + date.getFullYear();
 
     const firstdayindex = date.getDay() - 1;
 
@@ -232,7 +234,7 @@ function noWeekend() {
         end.value = "";
         timefree.value = "";
     }
-    if (day.getHours() >16 || day.getHours()<8) {
+    if (day.getHours() > 16 || day.getHours() < 8) {
         alert('Between 8-16');
         datetime.value = "";
         start.value = "";
