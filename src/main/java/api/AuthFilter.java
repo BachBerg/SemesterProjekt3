@@ -19,8 +19,8 @@ public class AuthFilter implements ContainerRequestFilter {
             if (auth == null || !auth.equals("Bearer hemmeliglogin")){
                 throw new WebApplicationException(auth + "psst hvad er kodeordet?", 401);
             }
-
         }
+
         //Hvis det ikke er login siden udføre vi kontrol af token
         if (!"login".equals(containerRequestContext.getUriInfo().getPath()) && !"aftaler".equals(containerRequestContext.getUriInfo().getPath())) {
             if (containerRequestContext.getHeaderString("Authorization") == null) {
