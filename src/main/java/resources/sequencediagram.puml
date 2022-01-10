@@ -1,0 +1,17 @@
+@startuml
+
+Python -> EkgService : HTTP Post
+EkgService -> EkgController : validate()
+EkgController ->> SQL : ekgCreateNew()
+
+EkgService <<-- EkgController : Return
+Python <<-- EkgService : Return
+
+EkgController -> EkgController : analyseData()
+
+EkgController -> SQL : sql.getobjekt
+entity      SQLDatabase      as sqldb
+SQL -> sqldb  : insertEkg()
+SQL <<-- sqldb : Return
+EkgController <-- SQL : Return
+@enduml
