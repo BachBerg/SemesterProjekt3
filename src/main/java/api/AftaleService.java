@@ -17,14 +17,14 @@ public class AftaleService {
 
     @GET
     public AftaleListe getPatient(@QueryParam("cpr") String cpr) throws SQLException, OurException {
-        return AftaleController.getAftaleControllerOBJ().cprSearch(cpr);
+        return AftaleController.getAftaleControllerOBJ().getAftaleListeCprSearch(cpr);
     }
 
     @Path("aftalerSQL")
     @POST
     @Produces({MediaType.TEXT_PLAIN})
     public String makepatientSQL(@QueryParam("cpr") String cpr, @QueryParam("timestart")
-            String timestart, @QueryParam("timeend") String timeend, @QueryParam("note") String notat) throws SQLException, OurException {
+            String timestart, @QueryParam("timeend") String timeend, @QueryParam("note") String notat) throws OurException, SQLException {
         return AftaleController.getAftaleControllerOBJ().createAftale(cpr, timestart, timeend, notat);
     }
 

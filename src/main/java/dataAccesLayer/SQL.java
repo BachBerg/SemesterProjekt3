@@ -4,6 +4,7 @@ import exceptions.OurException;
 import model.Aftale;
 import model.AftaleListe;
 
+import javax.ws.rs.WebApplicationException;
 import java.sql.*;
 
 public class SQL {
@@ -17,7 +18,7 @@ public class SQL {
         return SQLOBJ;
     }
 
-    private final String url = "jdbc:mysql://130.225.170.204:3306/sys";
+    private final String url = "jdbc:mysql://130.225.170.204:3306/gruppe2DB";
     private final String DatabaseUser = "gruppe2";
     private final String DatabasePassword = "MisdannetHelLy";
     // System.getenv("dbpass"); //tomcat system startups
@@ -48,7 +49,7 @@ public class SQL {
         SQL.getSqlOBJ().makeConnectionSQL();
         AftaleListe aftaleListe = new AftaleListe();
         try {
-            PreparedStatement pp = myConn.prepareStatement("SELECT * FROM sys.aftaler WHERE TimeStart BETWEEN ? and ?;");
+            PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.aftaler WHERE timestart BETWEEN ? and ?;");
             pp.setString(1, fra);
             pp.setString(2, til);
 
@@ -56,12 +57,11 @@ public class SQL {
 
             while (rs.next()) {
                 Aftale aftale = new Aftale();
-                aftale.setCPR(String.valueOf(rs.getInt(1)));
+                aftale.setID(String.valueOf(rs.getInt(1)));
                 aftale.setTimeStart(rs.getString(2));
                 aftale.setTimeEnd(rs.getString(3));
                 aftale.setNotat(rs.getString(4));
-                aftale.setID(rs.getString(5));
-                aftale.setKlinikID(rs.getString(6));
+                aftale.setKlinikID(rs.getString(5));
 
 
                 aftaleListe.addAftaler(aftale);
@@ -74,43 +74,44 @@ public class SQL {
         return aftaleListe;
     }
 
-    public void insertAftaleSQL(Aftale aftale) throws OurException {
+    public void insertAftaleSQL(Aftale aftale) {
 
         try {
             makeConnectionSQL();
-            PreparedStatement pp = myConn.prepareStatement("INSERT INTO sys.aftaler (CPR, TimeStart, TimeEnd, Notat, KlinikId) values(?,?,?,?,?);");
+            PreparedStatement pp = myConn.prepareStatement("INSERT INTO gruppe2DB.aftaler (`patientID`, `timestart`, `timeend`, `note`, `klinikID`) values(?,?,?,?,?);");
 
-            pp.setString(1, aftale.getCPR());  //CPR
+            pp.setString(1, aftale.getID());  //ID
             pp.setString(2, aftale.getTimeStart());  //starttime
             pp.setString(3, aftale.getTimeEnd());  //endtime
             pp.setString(4, aftale.getNotat());  //note
-            pp.setString(5, aftale.getKlinikID()); //klinikif
+            pp.setString(5, aftale.getKlinikID()); //klinikid
 
             pp.execute();
 
             removeConnectionSQL();
         } catch (SQLException throwables) {
-            OurException ex = new OurException();
+            /*OurException ex = new OurException();
             ex.setMessage("Tiden er allerede optaget.");
-            throw ex;
+            throw ex;*/
+            throw new WebApplicationException("Tiden er allerede optaget.",420);
         }
     }
 
     public AftaleListe getAftalerListe() throws SQLException {
+        System.out.println("returnere aftale liste");
         SQL.getSqlOBJ().makeConnectionSQL();
         AftaleListe aftaleListe = new AftaleListe();
-        String query = "SELECT * FROM aftaler";
+        String query = "SELECT * FROM gruppe2DB.aftaler;";
         try {
             ResultSet rs = SQL.getSqlOBJ().myStatement.executeQuery(query);
 
             while (rs.next()) {
                 Aftale aftale = new Aftale();
-                aftale.setCPR(String.valueOf(rs.getInt(1)));
+                aftale.setID(String.valueOf(rs.getInt(1)));
                 aftale.setTimeStart(rs.getString(2));
                 aftale.setTimeEnd(rs.getString(3));
                 aftale.setNotat(rs.getString(4));
-                aftale.setID(rs.getString(5));
-                aftale.setKlinikID(rs.getString(6));
+                aftale.setKlinikID(rs.getString(5));
 
                 aftaleListe.addAftaler(aftale);
             }
@@ -119,13 +120,13 @@ public class SQL {
             e.printStackTrace();
         }
         SQL.getSqlOBJ().removeConnectionSQL();
-
+        System.out.println("succes");
         return aftaleListe;
     }
 
     public String hentBrugerListe(String bruger) throws SQLException {
         SQL.getSqlOBJ().makeConnectionSQL();
-        PreparedStatement preparedStatement = myConn.prepareStatement("SELECT * FROM sys.LoginOplysninger WHERE USERNAME = ?;");
+        PreparedStatement preparedStatement = myConn.prepareStatement("SELECT * FROM gruppe2DB.LoginOplysninger WHERE USERNAME = ?;");
         preparedStatement.setString(1, bruger);
         String svar = "";
         try {
@@ -142,22 +143,22 @@ public class SQL {
         return svar;
     }
 
-    public AftaleListe cprSearch(String cpr) throws SQLException {
+    public AftaleListe getAftalerIDSearch(String ID) throws SQLException {
+        System.out.println("returnere aftale liste til et id");
         SQL.getSqlOBJ().makeConnectionSQL();
-        PreparedStatement pp = myConn.prepareStatement("SELECT * FROM sys.aftaler WHERE CPR = ?;");
+        PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.aftaler WHERE ID = ?;");
         AftaleListe aftaleListe = new AftaleListe();
         try {
-            pp.setString(1, cpr);
+            pp.setString(1, ID);
             ResultSet rs = pp.executeQuery();
 
             while (rs.next()) {
                 Aftale aftale = new Aftale();
-                aftale.setCPR(String.valueOf(rs.getInt(1)));
+                aftale.setID(String.valueOf(rs.getInt(1)));
                 aftale.setTimeStart(rs.getString(2));
                 aftale.setTimeEnd(rs.getString(3));
                 aftale.setNotat(rs.getString(4));
-                aftale.setID(rs.getString(5));
-                aftale.setKlinikID(rs.getString(6));
+                aftale.setKlinikID(rs.getString(5));
 
                 aftaleListe.addAftaler(aftale);
             }
@@ -165,7 +166,54 @@ public class SQL {
             e.printStackTrace();
         }
         SQL.getSqlOBJ().removeConnectionSQL();
+        System.out.println("succes");
         return aftaleListe;
     }
+
+    public int getID(String cpr) {
+        int id = 0;
+
+        try {
+            SQL.getSqlOBJ().makeConnectionSQL();
+
+            PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.patient WHERE CPR = ?;");
+            pp.setString(1,cpr);
+
+            ResultSet rs = pp.executeQuery();
+            rs.next();
+            id = rs.getInt(1);
+            System.out.println("hentede succesfuldt id: " + id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        SQL.getSqlOBJ().removeConnectionSQL();
+        return id;
+    }
+
+    public String getCPR(int id) {
+        String cpr = null;
+        try {
+            SQL.getSqlOBJ().makeConnectionSQL();
+
+            PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.patient WHERE patientID = ?;");
+            pp.setString(1, String.valueOf(id));
+
+            ResultSet rs = pp.executeQuery();
+            rs.next();
+            cpr = rs.getString(2);
+            System.out.println("hentede succesfuldt cpr: " + cpr);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        SQL.getSqlOBJ().removeConnectionSQL();
+        return cpr;
+    }
+
+
+
+    /* metode til at hente sessioner tilhørende et cpr*/
+
+
+
 }
 

@@ -24,13 +24,13 @@ public class EkgService {
     @GET
     public String getEkgSessions(@QueryParam("cpr") String cpr, @QueryParam("sessionID") int sessionID) {
 
-        return "sessioner";
+        return "mållingerne til den givne session";
     }
 
-    /* til at sende data ind med python */
+    /* til at modtage data fra python */
     @Path("newMeasurements")
     @POST
-    public String pythonDataReceive(String string, @Context HttpHeaders httpHeaders) {
+    public String receivData(String string, @Context HttpHeaders httpHeaders) {
         System.out.println(string);
         System.out.println(httpHeaders.getRequestHeader("Identifier").get(0));
 

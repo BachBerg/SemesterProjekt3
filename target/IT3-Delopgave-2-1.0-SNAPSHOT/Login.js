@@ -53,21 +53,21 @@ async function login() {
         }
     });
 
-    }
+}
 
-    function tokenHandler(loginToken){
-        //const token = await res.text();
-        if (loginToken != null){
-            // hvis vi får en token, gemmer vi den i browserens localstorage
-            localStorage.setItem("token", loginToken);
+function tokenHandler(loginToken) {
+    //const token = await res.text();
+    if (loginToken != null) {
+        // hvis vi får en token, gemmer vi den i browserens localstorage
+        localStorage.setItem("token", loginToken);
 
-            //For ekstra krymmel fisker vi en bruger ud af tokenen
-            const payload = window.atob(loginToken.split(".")[1]);
-            const payloadJson = JSON.parse(payload);
-            localStorage.setItem("user", payloadJson.username);
+        //For ekstra krymmel fisker vi en bruger ud af tokenen
+        const payload = window.atob(loginToken.split(".")[1]);
+        const payloadJson = JSON.parse(payload);
+        localStorage.setItem("user", payloadJson.username);
 
-            //Viderestil til den rigtige side!
-            window.location.href = "StartSide.html"
+        //Viderestil til den rigtige side!
+        window.location.href = "StartSide.html"
     }
 
 }

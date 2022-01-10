@@ -30,10 +30,10 @@ public class ImportService {
             }
             case 4: {
                 if (cpr.length()>5) {
-                    jsonobj = ImportController.getimportControllerOBJ().getImportJSON(("https://grp4.it3.diplomportal.dk/data/aftaler?cpr="+cpr));
+                    jsonobj = ImportController.getimportControllerOBJ().getImportJSON(("http://localhost:8080/Semesterprojekt3_war/data/aftaler?cpr="+cpr));
                 }
                 else{
-                    jsonobj = ImportController.getimportControllerOBJ().getImportJSON("https://grp4.it3.diplomportal.dk/data/aftaler");
+                    jsonobj = ImportController.getimportControllerOBJ().getImportJSON("http://localhost:8080/Semesterprojekt3_war/data/aftaler");
                 }
                 return jsonobj.toString();
             }

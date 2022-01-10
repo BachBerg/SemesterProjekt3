@@ -1,10 +1,10 @@
 package controller;
 
+import com.google.gson.Gson;
 import dataAccesLayer.SQL;
 import exceptions.OurException;
 import model.Aftale;
 import model.AftaleListe;
-
 
 import java.sql.SQLException;
 
@@ -20,23 +20,23 @@ public class AftaleController {
     }
 
     // bolsk værdi til kontrol af cpr'er
-    public boolean cprCheck(String name) {
+    public boolean cprCheck(String cpr) {
         try {
-            double test = Double.parseDouble(name);
-            return name.length() == 10;
+            double test = Double.parseDouble(cpr);
+            return cpr.length() == 10;
         } catch (Exception e) {
             return false;
         }
     }
 
-    public AftaleListe cprSearch(String cpr) throws SQLException, OurException {
-        if (cpr == null) {
+    public AftaleListe getAftaleListeCprSearch(String cpr) throws SQLException {
+
+        if (cprCheck(cpr)) {
+            int ID = SQL.getSqlOBJ().getID(cpr);
+            return SQL.getSqlOBJ().getAftalerIDSearch(String.valueOf(ID));
+        }else{
             return SQL.getSqlOBJ().getAftalerListe();
         }
-        if (cprCheck(cpr)) {
-            return SQL.getSqlOBJ().cprSearch(cpr);
-        }
-       return new AftaleListe();
     }
 
 
@@ -44,11 +44,12 @@ public class AftaleController {
         Aftale aftale = new Aftale();
         if (cprCheck(cpr)) {
             if (note.length() < 255) {
-                aftale.setCPR(cpr);
+                int id = SQL.getSqlOBJ().getID(cpr);
+                aftale.setID(String.valueOf(id));
                 aftale.setTimeStart(timestart);
                 aftale.setTimeEnd(timeend);
                 aftale.setNotat(note);
-                aftale.setKlinikID("4");
+                aftale.setKlinikID("2");
 
                 SQL.getSqlOBJ().insertAftaleSQL(aftale);
                 return "added patient" + aftale;
@@ -57,12 +58,15 @@ public class AftaleController {
                 OurException ex = new OurException();
                 ex.setMessage("For lang note, skal være under 255 tegn.");
                 throw ex;
+                //throw new WebApplicationException("For lang note, skal være under 255 tegn",420);
             }
         } else {
             // forkert cpr
             OurException ex = new OurException();
             ex.setMessage("CPR skal være 10 cifre, yyyymmddxxxx");
             throw ex;
+            //throw new WebApplicationException("CPR skal være 10 cifre, yyyymmddxxxx",420);
         }
     }
+
 }

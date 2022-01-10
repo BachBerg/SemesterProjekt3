@@ -20,6 +20,9 @@ public class AuthFilter implements ContainerRequestFilter {
                 throw new WebApplicationException(auth + "psst hvad er kodeordet?", 401);
             }
         }
+        // her skal vi udføre kontrol af kald til den nye endpoint, om folk har den rette nøgle med i headeren
+
+
 
         //Hvis det ikke er login siden udføre vi kontrol af token
         if (!"login".equals(containerRequestContext.getUriInfo().getPath()) && !"aftaler".equals(containerRequestContext.getUriInfo().getPath())) {
@@ -31,7 +34,6 @@ public class AuthFilter implements ContainerRequestFilter {
             }catch (Exception e){
                 throw new WebApplicationException("Invalid Token", 401);
             }
-
         }
 
     }

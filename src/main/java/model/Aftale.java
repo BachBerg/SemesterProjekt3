@@ -1,12 +1,9 @@
 package model;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 public class Aftale {
 
 
-    private String CPR;
+
     private String ID;
     private String klinikID;
     private String timeStart;
@@ -16,21 +13,12 @@ public class Aftale {
     @Override
     public String toString() {
         return "model.Aftale{" +
-                "CPR='" + CPR + '\'' +
                 ", ID='" + ID + '\'' +
                 ", KlinikID='" + klinikID + '\'' +
                 ", TimeStart='" + timeStart + '\'' +
                 ", TimeEnd='" + timeEnd + '\'' +
                 ", Notat='" + notat + '\'' +
                 '}';
-    }
-
-    public String getCPR() {
-        return CPR;
-    }
-
-    public void setCPR(String CPR) {
-        this.CPR = CPR;
     }
 
     public String getID() {

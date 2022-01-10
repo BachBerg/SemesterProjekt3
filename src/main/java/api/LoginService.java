@@ -1,7 +1,6 @@
 package api;
 
 import controller.LoginController;
-import exceptions.OurException;
 import model.LoginData;
 
 import javax.ws.rs.*;

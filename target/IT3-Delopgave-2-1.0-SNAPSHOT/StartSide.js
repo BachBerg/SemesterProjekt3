@@ -6,7 +6,7 @@ if (!tok) {
 function hentAftaleFecth(from, to) {
     let fra = from;
     let til = to;
-    fetch("/data/aftaler/aftalerSQL?" + new URLSearchParams({
+    fetch("http://localhost:8080/Semesterprojekt3_war/data/aftaler/aftalerSQL?" + new URLSearchParams({
         from: fra,
         to: til,
 
@@ -137,8 +137,8 @@ function setdates(year, month, day) {
 }
 
 //Pop-up journal
-function formfetch() {
-    fetch("/data/aftaler/aftalerSQL?" + new URLSearchParams({
+function postAftale() {
+    fetch("http://localhost:8080/Semesterprojekt3_war/data/aftaler/aftalerSQL?" + new URLSearchParams({
         cpr: document.getElementById("cpr").value,
         //name: document.getElementById("navn").value,
         timestart: document.getElementById("timeStart").value,
@@ -170,7 +170,7 @@ function closeForm() {
 
 function submitForm() {
     document.getElementById("myForm").style.display = "none";
-    formfetch()
+    postAftale()
     resetForm()
 }
 

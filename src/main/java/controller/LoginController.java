@@ -35,6 +35,16 @@ public class LoginController {
         throw new WebApplicationException(401);
     }
 
+    // main metode til manuelt at lave nye kodeord
+    /*public static void main(String[] args) {
+        String nytKodeord = "Sundperson123";
+        String kodeord = generateHash(nytKodeord);
+        System.out.println(kodeord);
+        System.out.println(hashControl(nytKodeord, kodeord));
+    }*/
+
+
+
     /* metode der blev brugt til at hashe kodeordene */
     public static String generateHash(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(10));

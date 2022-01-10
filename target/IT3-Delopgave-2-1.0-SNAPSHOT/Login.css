@@ -6,9 +6,9 @@
 
 /* baggrund. tog bare et random billede kan altid ændres */
 body {
-    background: url('IMG/dna-3539309_1920.jpg') no-repeat center;
+    font-family: 'Times New Roman', sans-serif;
+    background: url("IMG/white-abstract.jpg");
     background-size: cover;
-    font-family: "Times New Roman", serif;
 }
 
 /* Centrer boksen, som den er i midten */
