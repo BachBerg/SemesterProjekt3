@@ -10,7 +10,7 @@ import json
   
 # OBBBBSSSSS     Tomcat Serveren skal PT være tændt.
 
-endpoint = "http://localhost:8080/SemesterProjekt_3_war/data/ekg"
+endpoint = "http://localhost:8080/Semesterprojekt3_war/data/ekgSessions"
 
 
 cpr= "1234567890" #CPR
@@ -25,3 +25,5 @@ r = requests.post(endpoint,  data = json.dumps(dsparray), headers = Headers )
 #Modtage responbesked 
 Response = r.text
 print(Response)
+
+

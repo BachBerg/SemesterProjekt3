@@ -17,12 +17,22 @@ import wfdb
 signals, info = wfdb.rdsamp('rec_2', channels=[0, 1], 
                               sampfrom=0, sampto=2000)
 
-Fs = 500
-Ts = 1/Fs
+fs = 500
+Ts = 1/fs
+
 t = np.arange(0,2000*Ts,Ts)
+
 
 ecg0 = signals[:,0]
 ecg1 = signals[:,1]
+
+
+# Plot signal i tidsdomæne
+plt.plot(t,ecg0)
+plt.title('Tidsdomæne')
+plt.xlabel('tid (s)')
+plt.show()
+
 
 
 #Baseline wander
@@ -34,66 +44,38 @@ f1=60
 
 #notch filter til at fjerne baseline wander 
 #Q = w0/bw. 0,6/5 (Q værdi)
-Q1=0.6/5
-
+Q1=f0/5
+Q2=f0/5
 
 #Fc (cutt-off frekvens)
 Fc=0.002
 
 
 
-#notch filter til at fjerne baseline wander støj
-b1, a1 = signal.iirnotch(f0, Q1, Fs)
-notchfilter= signal.freqz(b1, a1, fs=Fs)
-FilteretUBWS = signal.filtfilt (notchfilter,1 , ecg0)
+#notch filter
 
-plt.title("EKG uden basline wander støj")
-plt.plot(FilteretUBWS)
-FilteretUBWS
+b1, a1 = signal.iirnotch(f0, Q1, fs)
 
+freq1, h1= signal.freqz(b1, a1, fs=fs)
 
-outputsignal1=FilteretUBWS
+FilteretUBWS = signal.filtfilt (b1, a1 , ecg0)
 
-
-
-
-#powerline
-
-
-Q2=60/120
-
-# fjern Powerline interference støj
-
-b2, a2 = signal.iirnotch(f1, Q2, Fs)
-freq, h = signal.freqz(b2, a2, fs=Fs)
-FilteretUBP = signal.filtfilt (notchfilter,1 , outputsignal1)
-
-plt.title("EKG uden basline wander støj+ Powerline støj")
-plt.plot(FilteretUBP)
-
+plt.plot(FilteretUBWS, color='red')
+plt.plot(ecg0, color='blue')
 plt.show()
 
 
-outputsignal2=FilteretUBP
+Q2=f1/5
 
 
 
+b2, a2 = signal.iirnotch(f1, Q2, fs)
 
+freq2, h2 = signal.freqz(b2, a2, fs=fs)
 
-#frekvensdomænet
+FilteretUBP = signal.filtfilt (b2, a2 , FilteretUBWS)
 
+plt.plot(FilteretUBP, color='red')
+plt.plot(ecg0, color='blue')
+plt.show()
 
-
-#spectrum for EKG uden baseline wander støj
-
-plt.magnitude_spectrum(FilteretUBWS,Fs, color='red')
-plt.title("EKG uden basline støj")
-plt.xlabel("frekvensdommænet")
-
-
-
-#spectrum for EKG uden basline wander støj+ Powerline støj
-
-plt.magnitude_spectrum(FilteretUBP,Fs, color="green")
-plt.title("EKG uden basline wander støj+ Powerline støj")
-plt.ylabel("frekvensdommænet")

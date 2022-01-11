@@ -1,24 +1,25 @@
 package dataAccesLayer;
 
-import model.Aftale;
-import model.AftaleListe;
-
 import javax.ws.rs.WebApplicationException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ekgDB {
 
-    public static void insertEkgData(String value, String id) {
+    public static void insertEkgData(List<Double> measurements, int patientID, int sessionID) {
+        String sqlQuery = "INSERT INTO gruppe2DB.EkgData(measurement , sessionID , patientID) values(" + measurements.get(0) + "," + sessionID + "," + patientID + ")";
 
+        for (int i = 1; i < measurements.size(); i++) {
+            sqlQuery = sqlQuery + ",(" + measurements.get(i) + "," + sessionID + "," + patientID + ")";
+        }
+
+        sqlQuery = sqlQuery + ";";
         try {
             SQL.getSqlOBJ().makeConnectionSQL();
-            PreparedStatement pp = SQL.getSqlOBJ().myConn.prepareStatement("INSERT INTO `gruppe2DB`.`EkgData` (`measurement`, `sessionID`) values(?,?);");
 
-            pp.setString(1, value);
-            pp.setString(2, id);
-
+            PreparedStatement pp = SQL.getSqlOBJ().myConn.prepareStatement(sqlQuery);
             pp.execute();
 
             SQL.getSqlOBJ().removeConnectionSQL();
@@ -47,7 +48,30 @@ public class ekgDB {
         SQL.getSqlOBJ().removeConnectionSQL();
         return List;
     }
-    public static double getMeasurementFromSession(int sessionID){
+
+    public static int getNewestSession(int patientID) {
+        int newestSession = 0;
+
+        try {
+            SQL.getSqlOBJ().makeConnectionSQL();
+
+            PreparedStatement prep = SQL.getSqlOBJ().myConn.prepareStatement("SELECT MAX(sessionID) FROM gruppe2DB.sessionData WHERE patientID= ?;");
+            prep.setString(1, String.valueOf(patientID));
+
+            ResultSet rs = prep.executeQuery();
+            rs.next();
+
+            newestSession = rs.getInt(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        SQL.getSqlOBJ().removeConnectionSQL();
+        System.out.println(newestSession);
+        return newestSession;
+    }
+
+    public static double getMeasurementFromSession(int sessionID) {
         double measurement = 0;
         try {
             SQL.getSqlOBJ().makeConnectionSQL();
@@ -58,7 +82,6 @@ public class ekgDB {
             rs.next();
             measurement = rs.getDouble(1);
 
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,6 +89,19 @@ public class ekgDB {
         return measurement;
     }
 
+    public static void createNewSession(int patientID) {
+
+        try {
+            SQL.getSqlOBJ().makeConnectionSQL();
+            PreparedStatement pp = SQL.getSqlOBJ().myConn.prepareStatement("INSERT INTO gruppe2DB.sessionData (`patientID`) values(?);");
+            pp.setString(1, String.valueOf(patientID));  //ID
+            pp.execute();
+            SQL.getSqlOBJ().removeConnectionSQL();
+            System.out.println("created new session til: " + patientID);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
 
 }
