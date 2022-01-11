@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:http="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>EKG side</title>
+    <link rel="stylesheet" type="text/css" href="EKGside.css">
+    <script src="http:cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src=" EKGside.js"></script>
+</head>
+
+<body>
+<h1>EKG overview</h1>
+
+<div class="baggrund">
+
+</div>
+
+<!--topbar -->
+<!--Dette virker ikke -->
+<div class="topbar">
+    <p id="MyClockDisplay" class="clock"></p>
+</div>
+
+
+<div class="tilbageknap"> <!-- tjek dette efter, da det virker til at den ikke går igennem, men kun helt tilbage til login. -->
+    <button class="button1" onclick="window.location.replace('StartSide.html')"> Tilbage </button>
+</div>
+
+<div>
+    <input type="text" id="cpr" value="Indtast CPR" class="cpr">
+    <button name="sogCPR" type="button" type="buttonsogCPR" onclick="sogCPR()">søg</button>
+</div>
+
+<div class="marker">
+    <button name="Marker" type="button" type="buttonMarker" onclick="MarkerFunktion()">Marker</button>
+</div>
+<!-- skal laves om!!!! -->
+<div class="dropdown">
+    <button onclick="myFunction()" class="dropdownbtn">Dropdown</button>
+    <div id="myDropdown" class="dropdown-content">
+        <label value="Sesion 1">Sesion 1</label>
+        <label value="Sesion 2">Sesion 2</label>
+        <label value="Sesion 3">Sesion 3</label>
+        <label value="Sesion 4">Sesion 4</label>
+        <label value="Sesion 5">Sesion 5</label>
+    </div>
+</div>
+
+
+
+</body>
+</html>
