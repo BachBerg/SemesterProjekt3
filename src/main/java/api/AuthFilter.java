@@ -14,15 +14,18 @@ public class AuthFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext containerRequestContext) {
         /* Kontrol af private key på aftaler endpoint */
-        if ("aftaler".equals(containerRequestContext.getUriInfo().getPath()) || "ekgSessions".equals(containerRequestContext.getUriInfo().getPath()) || "measurements".equals(containerRequestContext.getUriInfo().getPath())){
+        if ("aftaler".equals(containerRequestContext.getUriInfo().getPath()) ){
             String auth = containerRequestContext.getHeaderString("Authorization");
             if (auth == null || !auth.equals("Bearer hemmeliglogin")){
                 throw new WebApplicationException(auth + "psst hvad er kodeordet?", 401);
             }
         }
+
+
         // her skal vi udføre kontrol af kald til den nye endpoint, om folk har den rette nøgle med i headeren
-        if ("aftaler".equals(containerRequestContext.getUriInfo().getPath())){
+        if ("ekgSessions".equals(containerRequestContext.getUriInfo().getPath()) ){
             String auth = containerRequestContext.getHeaderString("Authorization");
+            System.out.println(auth);
             if (auth == null || !auth.equals("Bearer hemmeliglogin")){
                 throw new WebApplicationException(auth + "psst hvad er kodeordet?", 401);
             }

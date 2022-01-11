@@ -28,7 +28,6 @@ public class EkgService {
     }
 
     /* til at modtage data fra python */
-    @Path("newMeasurements")
     @POST
     public String receiveData(String data, @Context HttpHeaders httpHeaders) {
         return newData(data, httpHeaders);
