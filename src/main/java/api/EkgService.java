@@ -16,11 +16,9 @@ public class EkgService {
 
     /* metode der returnere de forskellige "recording/mållings sessioner som tilhøre en cpr*/
     @GET
-    public String getEkgSessions(@QueryParam("cpr") String cpr) {
-        //getSessions(cpr);
-        return "her returneres sesisoner";
+    public int[] getEkgSessions(@QueryParam("cpr") String cpr) {
+        return getSessions(cpr);
     }
-
 
     /* til at hente data fra vores server*/
     @Path("measurements")

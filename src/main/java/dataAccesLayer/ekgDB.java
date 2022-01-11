@@ -23,7 +23,7 @@ public class ekgDB {
 
             SQL.getSqlOBJ().removeConnectionSQL();
         } catch (SQLException throwables) {
-            throw new WebApplicationException("Tiden er allerede optaget.", 420);
+            throw new WebApplicationException(420);
         }
     }
 
@@ -56,7 +56,7 @@ public class ekgDB {
             ResultSet rs = prep.executeQuery();
 
             rs.next();
-            measurement = rs.getInt(1);
+            measurement = rs.getDouble(1);
 
 
         } catch (SQLException e) {
