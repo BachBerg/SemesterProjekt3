@@ -8,32 +8,31 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 
+import static controller.EkgController.*;
+
 @Path("ekgSessions")
 public class EkgService {
 
 
     /* metode der returnere de forskellige "recording/mållings sessioner som tilhøre en cpr*/
     @GET
-    public String getEkgSession(@QueryParam("cpr") String cpr) {
-        return "xml objekt der indeholder sessions tilhørende det givne cpr";
+    public String getEkgSessions(@QueryParam("cpr") String cpr) {
+        //getSessions(cpr);
+        return "her returneres sesisoner";
     }
 
 
     /* til at hente data fra vores server*/
     @Path("measurements")
     @GET
-    public String getEkgSessions(@QueryParam("cpr") String cpr, @QueryParam("sessionID") int sessionID) {
-
-        return "mållingerne til den givne session";
+    public double getEkgData(@QueryParam("sessionID") int sessionID) {
+        return getData(sessionID);
     }
 
     /* til at modtage data fra python */
     @Path("newMeasurements")
     @POST
-    public String receivData(String string, @Context HttpHeaders httpHeaders) {
-        System.out.println(string);
-        System.out.println(httpHeaders.getRequestHeader("Identifier").get(0));
-
-        return "mesurment: " + string;
+    public String receiveData(String data, @Context HttpHeaders httpHeaders) {
+        return newData(data, httpHeaders);
     }
 }

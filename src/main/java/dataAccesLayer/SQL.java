@@ -22,7 +22,7 @@ public class SQL {
     private final String DatabaseUser = "gruppe2";
     private final String DatabasePassword = "MisdannetHelLy";
     // System.getenv("dbpass"); //tomcat system startups
-    private Connection myConn;
+    public Connection myConn;
     public Statement myStatement;
 
     public void makeConnectionSQL() throws SQLException {
@@ -208,12 +208,5 @@ public class SQL {
         SQL.getSqlOBJ().removeConnectionSQL();
         return cpr;
     }
-
-
-
-    /* metode til at hente sessioner tilhørende et cpr*/
-
-
-
 }
 
