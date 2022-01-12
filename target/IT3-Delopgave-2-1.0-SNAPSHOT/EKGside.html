@@ -5,31 +5,40 @@
     <title>EKG side</title>
     <link rel="stylesheet" type="text/css" href="EKGside.css">
     <script src=" EKGside.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
+<h1>
+    EKG overview
+</h1>
 <div>
-    <input type="text" id="cpr" value="Indtast CPR" class="cpr">
+    <label for="cpr"></label>
+    <input type="text" id="cpr" placeholder="Indtast CPR" class="cpr">
     <button name="sogCPR" class="button1" type="button" onclick="sogCPR()">søg</button>
 </div>
 
-<div class="marker">
-    <button name="Marker" class="button1" type="button" onclick="MarkerFunktion()">Marker</button>
+<div>
+    <button name="Marker" class="marker" type="button" onclick="MarkerFunktion()">Marker</button>
 </div>
 
-<!-- skal laves om!!!! -->
 <div class="dropdown">
     <button onclick="myFunction()" class="dropdownbtn">Dropdown</button>
     <div id="myDropdown" class="dropdown-content">
-        <label value="Sesion 1">Sesion 1</label>
-        <label value="Sesion 2">Sesion 2</label>
-        <label value="Sesion 3">Sesion 3</label>
-        <label value="Sesion 4">Sesion 4</label>
-        <label value="Sesion 5">Sesion 5</label>
+        <label value="Session 1">Session 1</label>
+        <label value="Session 2">Session 2</label>
+        <label value="Session 3">Session 3</label>
+        <label value="Session 4">Session 4</label>
+        <label value="Session 5">Session 5</label>
     </div>
-    <button class="button1" onclick="window.location.replace('StartSide.html')"> Tilbage </button>
+    <button name="tilbageknap" class="button1" onclick="window.location.replace('StartSide.html')"> Tilbage </button>
 </div>
+<canvas id="mycanvas" height="100" width="200">
 
+</canvas>
+<canvas id="myChart">
+
+</canvas>
 
 
 </body>

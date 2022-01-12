@@ -2,12 +2,10 @@ async function sogCPR(){
     //indsæt funktionerne her...
 }
 
-
 /*viser dropdown menu*/
 function myFunction() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
-
 
     function showTime() {
     var date = new Date();
@@ -41,6 +39,7 @@ let data = {
     ]
 }
 data.labels = Array(data.datasets[0].data.length).fill("")
+
 const config = {
     type: 'line',
     data: data,
