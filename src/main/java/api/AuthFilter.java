@@ -37,7 +37,8 @@ public class AuthFilter implements ContainerRequestFilter {
                 throw new WebApplicationException("Ingen Token", 401);
             }
             try{
-                User user = JWTHandler.validate(containerRequestContext.getHeaderString("Authorization"));
+                String Auth = JWTHandler.validate(containerRequestContext.getHeaderString("Authorization"));
+
             }catch (Exception e){
                 throw new WebApplicationException("Invalid Token", 401);
             }

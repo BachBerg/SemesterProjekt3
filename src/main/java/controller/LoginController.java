@@ -20,14 +20,12 @@ public class LoginController {
 
     public String doLogin(LoginData loginData) {
         try {
-            // sql kald der kontrollere om brugeren eksitere
-            String brugerListe = SQL.getSqlOBJ().hentBrugerListe(loginData.getUsername());
-            String[] opdelt = brugerListe.split("\\|");
+            // sql kald der kontrollere om brugeren eksitere og returnere brugeroplysninger
+            User nyUser = SQL.getSqlOBJ().getUserObjekt(loginData.getUsername());
 
             // kontrol af login og generer token
-            if (hashControl(loginData.getPassword(), opdelt[1])) {
-                User user = new User(loginData);
-                return JWTHandler.generateJwtToken(user);
+            if (hashControl(loginData.getPassword(), nyUser.getPassword())) {
+                return JWTHandler.generateJwtToken(nyUser);
             }
         } catch (SQLException e) {
             e.printStackTrace();

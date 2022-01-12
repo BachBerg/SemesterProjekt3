@@ -17,19 +17,20 @@ public class JWTHandler {
     private static Key key;
     private static final int TOKEN_EXPIRY = 2880; //2 days
 
-    public static String generateJwtToken(User user) {
+    public static String generateJwtToken(User userObjekt) {
         Calendar expiry = Calendar.getInstance();
         expiry.add(Calendar.MINUTE, TOKEN_EXPIRY);
+        userObjekt.setPassword("");
+
         return Jwts.builder()
-                .setIssuer("GiraffeDeluxe")
-                .claim("user", user)
+                .setIssuer("Andreas")
+                .claim("user", userObjekt)
                 .signWith(SignatureAlgorithm.HS512, getKey())
                 .setExpiration(expiry.getTime())
                 .compact();
     }
 
     private static Key getKey() {
-//Generate a secret key, if there is none specified in the environment - only use fixed key in development for debugging
         if (key == null) {
             if (System.getenv("JWT_SECRET_KEY") != null && System.getenv("JWT_SECRET_KEY") != "") {
                 String string = System.getenv("JWT_SECRET_KEY");
@@ -41,24 +42,30 @@ public class JWTHandler {
         return key;
     }
     // Validering af token
-    public static User validate(String authentication) {
+    public static String validate(String authentication) {
         if(authentication == null){
             throw new NotAuthorizedException("ingen header");
         }
         String[] tokenArray = authentication.split(" ");
         String token = tokenArray[tokenArray.length - 1];
-
+        User user;
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(getKey())
                     .parseClaimsJws(token)
                     .getBody();
             ObjectMapper mapper = new ObjectMapper();
-            User user = mapper.convertValue(claims.get("user"), User.class);
-            return user;
+
+            user = mapper.convertValue(claims.get("user"), User.class);
+
+            System.out.println("validate: " + user.getUsername()+ " " + user.getAuth() + " " + user.getPassword());
+            System.out.println("valideret user:  " + user);
+
         } catch (JwtException e){
             System.out.println(e.getClass() +":  "+ e.getMessage());
             throw new NotAuthorizedException(e.getMessage());
         }
+        return user.getAuth();
     }
+
 }

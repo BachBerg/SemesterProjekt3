@@ -3,6 +3,7 @@ package dataAccesLayer;
 import exceptions.OurException;
 import model.Aftale;
 import model.AftaleListe;
+import model.User;
 
 import javax.ws.rs.WebApplicationException;
 import java.sql.*;
@@ -93,7 +94,7 @@ public class SQL {
             /*OurException ex = new OurException();
             ex.setMessage("Tiden er allerede optaget.");
             throw ex;*/
-            throw new WebApplicationException("Tiden er allerede optaget.",420);
+            throw new WebApplicationException("Tiden er allerede optaget.", 420);
         }
     }
 
@@ -124,23 +125,25 @@ public class SQL {
         return aftaleListe;
     }
 
-    public String hentBrugerListe(String bruger) throws SQLException {
-        SQL.getSqlOBJ().makeConnectionSQL();
-        PreparedStatement preparedStatement = myConn.prepareStatement("SELECT * FROM gruppe2DB.LoginOplysninger WHERE USERNAME = ?;");
-        preparedStatement.setString(1, bruger);
-        String svar = "";
+    public User getUserObjekt(String username) throws SQLException {
+
+        User newUser = new User();
         try {
+            SQL.getSqlOBJ().makeConnectionSQL();
+            PreparedStatement preparedStatement = myConn.prepareStatement("SELECT * FROM gruppe2DB.LoginOplysninger WHERE USERNAME = ?;");
+            preparedStatement.setString(1, username);
             ResultSet rs = preparedStatement.executeQuery();
-            while (rs.next()) {
-                svar = svar + rs.getString(1);
-                svar = svar + "|" + rs.getString(2);
-                //svar = svar + "|" + rs.getString(3);
-            }
+            rs.next();
+            newUser.setUsername(rs.getString(1));
+            newUser.setPassword(rs.getString(2));
+            newUser.setAuth(rs.getString(3));
+
+            SQL.getSqlOBJ().removeConnectionSQL();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        SQL.getSqlOBJ().removeConnectionSQL();
-        return svar;
+        System.out.println("henter user obj: " + newUser.getAuth() + " " + newUser.getUsername() + " " + newUser.getPassword());
+        return newUser;
     }
 
     public AftaleListe getAftalerIDSearch(String ID) throws SQLException {
@@ -177,7 +180,7 @@ public class SQL {
             SQL.getSqlOBJ().makeConnectionSQL();
 
             PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.patient WHERE CPR = ?;");
-            pp.setString(1,cpr);
+            pp.setString(1, cpr);
 
             ResultSet rs = pp.executeQuery();
             rs.next();

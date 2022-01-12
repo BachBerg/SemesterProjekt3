@@ -66,6 +66,7 @@ function tokenHandler(loginToken) {
         const payloadJson = JSON.parse(payload);
         localStorage.setItem("user", payloadJson.username);
 
+
         //Viderestil til den rigtige side!
         window.location.href = "StartSide.html"
     }
