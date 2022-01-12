@@ -14,32 +14,34 @@ public class AuthFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext containerRequestContext) {
         /* Kontrol af private key på aftaler endpoint */
-        if ("aftaler".equals(containerRequestContext.getUriInfo().getPath()) ){
+        if ("aftaler".equals(containerRequestContext.getUriInfo().getPath())) {
             String auth = containerRequestContext.getHeaderString("Authorization");
-            if (auth == null || !auth.equals("Bearer hemmeliglogin")){
+            if (auth == null || !auth.equals("Bearer hemmeliglogin")) {
                 throw new WebApplicationException(auth + "psst hvad er kodeordet?", 401);
             }
         }
 
 
         // her skal vi udføre kontrol af kald til den nye endpoint, om folk har den rette nøgle med i headeren
-        if ("ekgSessions".equals(containerRequestContext.getUriInfo().getPath()) ){
+        if ("ekgSessions".equals(containerRequestContext.getUriInfo().getPath())) {
             String auth = containerRequestContext.getHeaderString("Authorization");
-            if (auth == null || !auth.equals("Bearer hemmeliglogin")){
+            if (auth == null || !auth.equals("Bearer hemmeliglogin")) {
                 throw new WebApplicationException(auth + "psst hvad er kodeordet?", 401);
             }
         }
 
 
-        //Hvis det ikke er login siden udføre vi kontrol af token
-        if (!"login".equals(containerRequestContext.getUriInfo().getPath()) && !"aftaler".equals(containerRequestContext.getUriInfo().getPath()) && !"ekgSessions".equals(containerRequestContext.getUriInfo().getPath())) {
+        //Hvis det ikke er login, aftaler eller ekgsession siden udføre vi kontrol af token
+        if (!"login".equals(containerRequestContext.getUriInfo().getPath()) &&
+                !"aftaler".equals(containerRequestContext.getUriInfo().getPath()) &&
+                !"ekgSessions".equals(containerRequestContext.getUriInfo().getPath())) {
             if (containerRequestContext.getHeaderString("Authorization") == null) {
                 throw new WebApplicationException("Ingen Token", 401);
             }
-            try{
+            try {
                 String Auth = JWTHandler.validate(containerRequestContext.getHeaderString("Authorization"));
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 throw new WebApplicationException("Invalid Token", 401);
             }
         }

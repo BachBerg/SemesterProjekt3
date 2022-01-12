@@ -28,15 +28,11 @@ let user = "";
 let pass = "";
 
 async function login() {
-    // Serialiser formen til js-objekt
-    //let loginform = document.getElementById("loginform");
+
     user = document.getElementById("username").value;
     pass = document.getElementById("password").value;
     sessionStorage.setItem("user", user);
 
-    //const formData = new FormData(loginform);
-    //const object = Object.fromEntries(formData);
-    console.log(user + pass)
     //Bruger fetch-API til at sende data - POST. JSON.stringify for at serialisere objekt til string.
     fetch("http://localhost:8080/Semesterprojekt3_war/data/login?" + new URLSearchParams({
         username: user,
@@ -56,19 +52,25 @@ async function login() {
 }
 
 function tokenHandler(loginToken) {
-    //const token = await res.text();
     if (loginToken != null) {
         // hvis vi får en token, gemmer vi den i browserens localstorage
         localStorage.setItem("token", loginToken);
 
-        //For ekstra krymmel fisker vi en bruger ud af tokenen
-        const payload = window.atob(loginToken.split(".")[1]);
-        const payloadJson = JSON.parse(payload);
-        localStorage.setItem("user", payloadJson.username);
+        fetch("http://localhost:8080/Semesterprojekt3_war/data/login/auth", {
+            headers: {
+                "Authorization": localStorage.getItem("token")
+            }
+        }).then(async resp => {
+            const auth = await resp.text();
+            console.log(auth)
+            localStorage.setItem("authstatus", auth);
+            if(auth === "1") {
+                window.location.href = "StartSide.html"
+            }else{
+                window.location.href = "patientStartSide.html"
+            }
+        });
 
 
-        //Viderestil til den rigtige side!
-        window.location.href = "StartSide.html"
     }
-
 }
