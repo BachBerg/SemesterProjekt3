@@ -62,8 +62,8 @@ body {
     padding: 2px;
     width: 200px;
     height: 30px;
-    left: 58%;
-    right: 30%;
+    left: 670px;
+
     font-family: "Times New Roman", sans-serif;
 }
 
@@ -86,8 +86,7 @@ body {
     display: block;
     width: 30rem;
     height: 40rem;
-    left: 58%;
-    right: 10%;
+    left: 670px;
     margin: 0;
     justify-content: center;
     align-items: center;
@@ -123,8 +122,8 @@ body {
 /*DETTE ER FOR SKEMA*/
 .schema {
     position: absolute;
-    left: 10%;
-    width: 45%;
+
+    width: 650px;
     height: 40rem;
     justify-content: center;
     align-items: center;
@@ -342,7 +341,7 @@ textarea {
     font-weight: bold;
     letter-spacing: 1px;
     text-transform: uppercase;
-    height: 30px;
+    height: 40px;
     width: 49%
 }
 
@@ -375,7 +374,7 @@ textarea {
 .form-popup {
     display: none;
     position: fixed;
-    bottom: 0;
+    bottom: 15px;
     right: 15px;
     z-index: 9;
     background-color: white;

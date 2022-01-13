@@ -13,6 +13,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.sql.SQLException;
+import java.util.Objects;
 
 @Path("aftaler")
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -37,7 +38,12 @@ public class AftaleService {
     @Path("aftalerSQL")
     @GET
     @Produces({MediaType.TEXT_PLAIN})
-    public String selectFromTime(@QueryParam("from") String from, @QueryParam("to") String to) throws SQLException {
-        return new Gson().toJson(SQL.getSqlOBJ().getAftaleListeDateTime(from, to));
+    public String selectFromTime(@QueryParam("from") String from, @QueryParam("to") String to,@QueryParam("cpr") String cpr) throws SQLException {
+        String auth = JWTHandler.validate(context.getHeaderString("Authorization"));
+        if(Objects.equals(auth, "1")){
+            return new Gson().toJson(SQL.getSqlOBJ().getAftaleListeDateTime(from, to));
+        }else{
+            return new Gson().toJson(SQL.getSqlOBJ().getAftaleListeDateTimeAndCPR(from, to, cpr));
+        }
     }
 }

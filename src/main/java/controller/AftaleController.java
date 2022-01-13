@@ -42,15 +42,21 @@ public class AftaleController {
 
     public String createAftale(String cpr, String timestart, String timeend, String note) throws OurException {
         Aftale aftale = new Aftale();
+
         if (cprCheck(cpr)) {
+            if(!SQL.getSqlOBJ().doesPatientExist(cpr)){
+                SQL.getSqlOBJ().createNewPatient(cpr);
+            }
             if (note.length() < 255) {
                 int id = SQL.getSqlOBJ().getID(cpr);
+
                 aftale.setID(String.valueOf(id));
                 aftale.setTimeStart(timestart);
                 aftale.setTimeEnd(timeend);
                 aftale.setNotat(note);
                 aftale.setKlinikID("2");
-
+                aftale.setCPR(cpr);
+                System.out.println(aftale.toString());
                 SQL.getSqlOBJ().insertAftaleSQL(aftale);
                 return "added patient" + aftale;
             } else {
@@ -58,15 +64,12 @@ public class AftaleController {
                 OurException ex = new OurException();
                 ex.setMessage("For lang note, skal være under 255 tegn.");
                 throw ex;
-                //throw new WebApplicationException("For lang note, skal være under 255 tegn",420);
             }
         } else {
             // forkert cpr
             OurException ex = new OurException();
             ex.setMessage("CPR skal være 10 cifre, yyyymmddxxxx");
             throw ex;
-            //throw new WebApplicationException("CPR skal være 10 cifre, yyyymmddxxxx",420);
         }
     }
-
 }

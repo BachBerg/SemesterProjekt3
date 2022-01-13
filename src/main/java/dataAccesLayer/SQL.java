@@ -63,7 +63,7 @@ public class SQL {
                 aftale.setTimeEnd(rs.getString(3));
                 aftale.setNotat(rs.getString(4));
                 aftale.setKlinikID(rs.getString(5));
-
+                aftale.setCPR(rs.getString(6));
 
                 aftaleListe.addAftaler(aftale);
             }
@@ -75,26 +75,56 @@ public class SQL {
         return aftaleListe;
     }
 
-    public void insertAftaleSQL(Aftale aftale) {
+
+    public AftaleListe getAftaleListeDateTimeAndCPR(String fra, String til, String cpr) throws SQLException {
+        SQL.getSqlOBJ().makeConnectionSQL();
+        AftaleListe aftaleListe = new AftaleListe();
+        try {
+            PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.aftaler WHERE cpr = ? and timestart BETWEEN ? and ?;");
+            pp.setString(1, cpr);
+            pp.setString(2, fra);
+            pp.setString(3, til);
+
+            ResultSet rs = pp.executeQuery();
+
+            while (rs.next()) {
+                Aftale aftale = new Aftale();
+                aftale.setID(String.valueOf(rs.getInt(1)));
+                aftale.setTimeStart(rs.getString(2));
+                aftale.setTimeEnd(rs.getString(3));
+                aftale.setNotat(rs.getString(4));
+                aftale.setKlinikID(rs.getString(5));
+                aftale.setCPR(rs.getString(6));
+
+                aftaleListe.addAftaler(aftale);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        SQL.getSqlOBJ().removeConnectionSQL();
+
+        return aftaleListe;
+    }
+
+
+    public void insertAftaleSQL(Aftale aftale) throws OurException {
 
         try {
             makeConnectionSQL();
-            PreparedStatement pp = myConn.prepareStatement("INSERT INTO gruppe2DB.aftaler (`patientID`, `timestart`, `timeend`, `note`, `klinikID`) values(?,?,?,?,?);");
-
-            pp.setString(1, aftale.getID());  //ID
-            pp.setString(2, aftale.getTimeStart());  //starttime
-            pp.setString(3, aftale.getTimeEnd());  //endtime
-            pp.setString(4, aftale.getNotat());  //note
-            pp.setString(5, aftale.getKlinikID()); //klinikid
-
+            PreparedStatement pp = myConn.prepareStatement("INSERT INTO gruppe2DB.aftaler (patientID, timestart, timeend, note, klinikID, cpr) values(?,?,?,?,?,?);");
+            pp.setString(1, aftale.getID());
+            pp.setString(2, aftale.getTimeStart());
+            pp.setString(3, aftale.getTimeEnd());
+            pp.setString(4, aftale.getNotat());
+            pp.setString(5, aftale.getKlinikID());
+            pp.setString(6, aftale.getCPR());
             pp.execute();
 
             removeConnectionSQL();
         } catch (SQLException throwables) {
-            /*OurException ex = new OurException();
+            OurException ex = new OurException();
             ex.setMessage("Tiden er allerede optaget.");
-            throw ex;*/
-            throw new WebApplicationException("Tiden er allerede optaget.", 420);
+            throw ex;
         }
     }
 
@@ -113,7 +143,7 @@ public class SQL {
                 aftale.setTimeEnd(rs.getString(3));
                 aftale.setNotat(rs.getString(4));
                 aftale.setKlinikID(rs.getString(5));
-
+                aftale.setCPR(rs.getString(6));
                 aftaleListe.addAftaler(aftale);
             }
 
@@ -162,7 +192,7 @@ public class SQL {
                 aftale.setTimeEnd(rs.getString(3));
                 aftale.setNotat(rs.getString(4));
                 aftale.setKlinikID(rs.getString(5));
-
+                aftale.setCPR(rs.getString(6));
                 aftaleListe.addAftaler(aftale);
             }
         } catch (SQLException e) {
@@ -179,37 +209,51 @@ public class SQL {
         try {
             SQL.getSqlOBJ().makeConnectionSQL();
 
-            PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.patient WHERE CPR = ?;");
+            PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.patient WHERE cpr = ?;");
             pp.setString(1, cpr);
 
             ResultSet rs = pp.executeQuery();
             rs.next();
             id = rs.getInt(1);
             System.out.println("hentede succesfuldt id: " + id);
+            SQL.getSqlOBJ().removeConnectionSQL();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        SQL.getSqlOBJ().removeConnectionSQL();
         return id;
     }
 
-    public String getCPR(int id) {
-        String cpr = null;
+    public void createNewPatient(String cpr) {
+        PreparedStatement pp = null;
         try {
             SQL.getSqlOBJ().makeConnectionSQL();
+            pp = myConn.prepareStatement("INSERT INTO gruppe2DB.patient (`cpr`) values(?);");
+            pp.setString(1, cpr);
+            pp.execute();
 
-            PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.patient WHERE patientID = ?;");
-            pp.setString(1, String.valueOf(id));
-
-            ResultSet rs = pp.executeQuery();
-            rs.next();
-            cpr = rs.getString(2);
-            System.out.println("hentede succesfuldt cpr: " + cpr);
+            removeConnectionSQL();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        SQL.getSqlOBJ().removeConnectionSQL();
-        return cpr;
+    }
+
+    public boolean doesPatientExist(String cpr) {
+        boolean answer = false;
+        try {
+            SQL.getSqlOBJ().makeConnectionSQL();
+
+            PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.patient WHERE cpr = ?;");
+            pp.setString(1, cpr);
+            ResultSet rs = pp.executeQuery();
+            if(rs.next()){
+                answer = true;
+            }
+            SQL.getSqlOBJ().removeConnectionSQL();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return answer;
     }
 }
 

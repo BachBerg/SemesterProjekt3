@@ -9,6 +9,7 @@ public class Aftale {
     private String timeStart;
     private String timeEnd;
     private String notat;
+    private String CPR;
 
     @Override
     public String toString() {
@@ -18,6 +19,7 @@ public class Aftale {
                 ", TimeStart='" + timeStart + '\'' +
                 ", TimeEnd='" + timeEnd + '\'' +
                 ", Notat='" + notat + '\'' +
+                ", CPR='" + CPR + '\'' +
                 '}';
     }
 
@@ -59,5 +61,14 @@ public class Aftale {
 
     public void setNotat(String notat) {
         this.notat = notat;
+    }
+
+
+    public String getCPR() {
+        return CPR;
+    }
+
+    public void setCPR(String CPR) {
+        this.CPR = CPR;
     }
 }

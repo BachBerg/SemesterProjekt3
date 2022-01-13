@@ -64,8 +64,7 @@ function tokenHandler(loginToken) {
             const auth = await resp.text();
             console.log(auth)
             localStorage.setItem("authstatus", auth);
-            if(auth == "1") {
-                //Viderestil til den rigtige side!
+            if(auth === "1") {
                 window.location.href = "StartSide.html"
             }else{
                 window.location.href = "patientStartSide.html"

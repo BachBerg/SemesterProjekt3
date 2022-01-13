@@ -2,6 +2,7 @@ let tok = localStorage.getItem("token");
 if (!tok) {
     window.location.href = "LoginSide.html"
 }
+document.getElementById("brugernavn").innerText = sessionStorage.getItem("user");
 
 function hentAftaleFecth(from, to) {
     let fra = from;
@@ -9,6 +10,7 @@ function hentAftaleFecth(from, to) {
     fetch("http://localhost:8080/Semesterprojekt3_war/data/aftaler/aftalerSQL?" + new URLSearchParams({
         from: fra,
         to: til,
+        cpr: sessionStorage.getItem("user")
 
     }), {
         headers: {
@@ -125,15 +127,9 @@ function setdates(year, month, day) {
     }
     //Gør klassen (den enkelte dato der bliver trykket på aktiv.
     document.getElementById(`${year},${month},${day}`).className = "active";
-    if (i === 0) {
-        hentAftaleFecth(fromfrom, tiltil);
-        setInterval(function () {
-            refresh()
-        }, 10000);
-        i++;
-    } else {
-        hentAftaleFecth(fromfrom, tiltil);
-    }
+
+    hentAftaleFecth(fromfrom, tiltil);
+
 }
 
 //Pop-up journal
@@ -158,31 +154,6 @@ function postAftale() {
     }).then(text => alert(text)).catch(Error => alert(Error));
 
 }
-
-function openForm() {
-    document.getElementById("myForm").style.display = "block";
-}
-
-function closeForm() {
-    document.getElementById("myForm").style.display = "none";
-    resetForm()
-}
-
-function submitForm() {
-    document.getElementById("myForm").style.display = "none";
-    postAftale()
-    resetForm()
-}
-
-function resetForm() {
-    document.getElementById("cpr").value = "";
-    //document.getElementById("navn").value = "";
-    document.getElementById("timeStart").value = "";
-    document.getElementById("timeEnd").value = "";
-    document.getElementById("timefree").value = "";
-    document.getElementById("textarea").value = "";
-}
-
 function noWeekend() {
     let datetime = document.getElementById('datetime');
 
@@ -243,6 +214,31 @@ function noWeekend() {
     }
 }
 
+
+
+function openForm() {
+    document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+    document.getElementById("myForm").style.display = "none";
+    resetForm()
+}
+
+function submitForm() {
+    document.getElementById("myForm").style.display = "none";
+    postAftale()
+    resetForm()
+}
+
+function resetForm() {
+    document.getElementById("cpr").value = "";
+    //document.getElementById("navn").value = "";
+    document.getElementById("timeStart").value = "";
+    document.getElementById("timeEnd").value = "";
+    document.getElementById("timefree").value = "";
+    document.getElementById("textarea").value = "";
+}
 window.onload = function () {
     showTime()
 }
@@ -250,7 +246,7 @@ window.onload = function () {
 
 function showTime() {
     var date = new Date();
-    let dato = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`
+    let dato = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
     var time = date.getHours();
     var minut = date.getMinutes();
 
@@ -269,10 +265,9 @@ function refresh() {
     hentAftaleFecth(fromfrom, tiltil)
 }
 
-document.getElementById("brugernavn").innerText = sessionStorage.getItem("user");
+
 
 function logud() {
-    sessionStorage.setItem("username", "");
     window.location.replace("LoginSide.html");
 }
 
