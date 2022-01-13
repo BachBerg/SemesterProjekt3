@@ -6,7 +6,6 @@ import controller.JWTHandler;
 import dataAccesLayer.SQL;
 import exceptions.OurException;
 import model.AftaleListe;
-import model.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
