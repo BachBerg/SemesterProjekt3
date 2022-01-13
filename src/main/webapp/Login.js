@@ -34,7 +34,7 @@ async function login() {
     sessionStorage.setItem("user", user);
 
     //Bruger fetch-API til at sende data - POST. JSON.stringify for at serialisere objekt til string.
-    fetch("http://localhost:8080/Semesterprojekt3_war/data/login?" + new URLSearchParams({
+    fetch("data/login?" + new URLSearchParams({
         username: user,
         password: pass,
     }, {
