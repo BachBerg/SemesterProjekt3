@@ -56,7 +56,6 @@ public class ekgDB {
 
     public static ekgSessionList getSessionsJson(int ID, String CPR){
         ekgSessionList liste = new ekgSessionList();
-        System.out.println("variabler: " + ID + CPR);
         try{
             SQL.getSqlOBJ().makeConnectionSQL();
             PreparedStatement prep = SQL.getSqlOBJ().myConn.prepareStatement("SELECT * FROM gruppe2DB.sessionData WHERE patientID = ?;");
@@ -66,27 +65,17 @@ public class ekgDB {
             while (rs.next()) {
                 ekgSession ekgsession = new ekgSession();
 
-                /*List<String> markers;
-                for (int i = 0; i < ; i++) {
-                    markers.addMarker(rs.getString(4).split(","));
-                }*/
-
                 ekgsession.setSessionID(rs.getInt(1));
                 ekgsession.setCpr(CPR);
                 ekgsession.setTimeStart(rs.getString(3));
-                //ekgsession.setMarkers();
                 ekgsession.setComment(rs.getString(5));
 
-                System.out.println(ekgsession);
                 liste.addEkgSession(ekgsession);
-                System.out.println(liste.getEkgSessionList().toString());
             }
-            System.out.println("step3");
             SQL.getSqlOBJ().removeConnectionSQL();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return liste;
     }
 

@@ -43,7 +43,6 @@ public class EkgService {
     @Path("ekgSessionJson")
     @GET
     public String getSessionJson(@QueryParam("cpr") String cpr) {
-        System.out.println("step1");
         return new Gson().toJson(getAllSessionJson(cpr));
     }
 

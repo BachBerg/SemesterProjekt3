@@ -43,7 +43,7 @@ window.onload = (function (){
 
 async function getSessions(){
     /*url skal ændres til database til cpr*/
-    await fetch("http://localhost:8080/Semesterprojekt3_war/data/ekgSessionsJson?" + new URLSearchParams({
+    await fetch("/data/ekgSessionsJson?" + new URLSearchParams({
         cpr: document.getElementById("cpr").value
     }), {
         headers: {
