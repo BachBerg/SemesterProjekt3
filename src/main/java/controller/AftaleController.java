@@ -8,6 +8,8 @@ import model.AftaleListe;
 
 import java.sql.SQLException;
 
+import static dataAccesLayer.ekgDB.*;
+
 public class AftaleController {
 
     private AftaleController() {
@@ -32,7 +34,7 @@ public class AftaleController {
     public AftaleListe getAftaleListeCprSearch(String cpr) throws SQLException {
 
         if (cprCheck(cpr)) {
-            int ID = SQL.getSqlOBJ().getID(cpr);
+            int ID = getID(cpr);
             return SQL.getSqlOBJ().getAftalerIDSearch(String.valueOf(ID));
         }else{
             return SQL.getSqlOBJ().getAftalerListe();
@@ -44,11 +46,11 @@ public class AftaleController {
         Aftale aftale = new Aftale();
 
         if (cprCheck(cpr)) {
-            if(!SQL.getSqlOBJ().doesPatientExist(cpr)){
-                SQL.getSqlOBJ().createNewPatient(cpr);
+            if(!doesPatientExist(cpr)){
+                createNewPatient(cpr);
             }
             if (note.length() < 255) {
-                int id = SQL.getSqlOBJ().getID(cpr);
+                int id = getID(cpr);
 
                 aftale.setID(String.valueOf(id));
                 aftale.setTimeStart(timestart);

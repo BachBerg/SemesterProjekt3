@@ -1,17 +1,3 @@
-async function sogCPR(){
-    let cpr = document.getElementById("cpr").value;
-    if (cpr.length === 10) { /*sørger for samme værdi og samme type*/
-    }
-    /*url skal ændres til database til cpr*/
-    fetch("http://localhost:8080/Semesterprojekt3_war/data/login?/" + new URLSearchParams ({
-        cpr: cpr
-    }), {
-            headers: {
-                "Authorization": localStorage.getItem("token")
-            }
-        })
-}
-
 /*viser dropdown menu*/
 function myFunction() {
     document.getElementById("myDropdown").classList.toggle("show");
@@ -53,4 +39,41 @@ window.onload = (function (){
         document.getElementById('myChart'),
        config
     )
-})
+});
+
+async function getSessions(){
+    /*url skal ændres til database til cpr*/
+    await fetch("http://localhost:8080/Semesterprojekt3_war/data/ekgSessionsJson?" + new URLSearchParams({
+        cpr: document.getElementById("cpr").value
+    }), {
+        headers: {
+            "Authorization": localStorage.getItem("token")
+        }
+    }).then(resp => resp.json()).then(data => createSession(data));
+}
+function createSession(data) {
+    let timestart = "";
+    let sesionID = "";
+    let marker = "";
+    let note = "";
+    let klinikID = "";
+    let container = "";
+
+    for (i = 0; i < data.ekgSessionList.length; i++) {
+        timestart = data.ekgSessionList[i].timeStart;
+        sesionID = data.ekgSessionList[i].sessionID;
+        marker = data.ekgSessionList[i].markers;
+        note = data.ekgSessionList[i].comment;
+        klinikID = data.ekgSessionList[i].klinikID;
+        console.log(klinikID);
+
+        let buffer = '<span class="commentbox" id="comment' + i + '" hidden>KlinikID: ' + klinikID
+            +'      '+ 'Sessionid: ' + sesid + '<br> Marker:<br><p id="marker' + i + '">' + marker
+            + '</p><br> Note:<br><textarea style="width: 225px" id="textarea' + i + '">' + note
+            + '</textarea><hr></span>';
+
+        container += buffer;
+    }
+
+    document.getElementById("myDropdown").innerText = container;
+}

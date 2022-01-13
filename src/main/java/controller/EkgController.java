@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import dataAccesLayer.SQL;
+import model.ekgSessionList;
 
 import javax.ws.rs.core.HttpHeaders;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class EkgController {
     /* klaser til at interagere med EkgService*/
 
     public static int[] getSessions(String cpr) {
-        int ID = SQL.getSqlOBJ().getID(cpr);
+        int ID = getID(cpr);
 
         return getSessionsID(ID);
     }
@@ -34,7 +35,7 @@ public class EkgController {
         System.out.println("array lsiten: " + liste.toString());
         System.out.println("cpr: " + httpHeaders.getRequestHeader("Identifier").get(0));
 
-        int patientID = SQL.getSqlOBJ().getID(httpHeaders.getRequestHeader("Identifier").get(0));
+        int patientID = getID(httpHeaders.getRequestHeader("Identifier").get(0));
 
         // først laves der en ny session
         createNewSession(patientID);
@@ -44,4 +45,11 @@ public class EkgController {
 
         return "measurement: " + data;
     }
+
+
+    public static ekgSessionList getAllSessionJson(String cpr){
+        int ID = getID(cpr);
+        return getSessionsJson(ID, cpr);
+    }
+
 }

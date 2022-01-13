@@ -202,58 +202,5 @@ public class SQL {
         System.out.println("succes");
         return aftaleListe;
     }
-
-    public int getID(String cpr) {
-        int id = 0;
-
-        try {
-            SQL.getSqlOBJ().makeConnectionSQL();
-
-            PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.patient WHERE cpr = ?;");
-            pp.setString(1, cpr);
-
-            ResultSet rs = pp.executeQuery();
-            rs.next();
-            id = rs.getInt(1);
-            System.out.println("hentede succesfuldt id: " + id);
-            SQL.getSqlOBJ().removeConnectionSQL();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return id;
-    }
-
-    public void createNewPatient(String cpr) {
-        PreparedStatement pp = null;
-        try {
-            SQL.getSqlOBJ().makeConnectionSQL();
-            pp = myConn.prepareStatement("INSERT INTO gruppe2DB.patient (`cpr`) values(?);");
-            pp.setString(1, cpr);
-            pp.execute();
-
-            removeConnectionSQL();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean doesPatientExist(String cpr) {
-        boolean answer = false;
-        try {
-            SQL.getSqlOBJ().makeConnectionSQL();
-
-            PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.patient WHERE cpr = ?;");
-            pp.setString(1, cpr);
-            ResultSet rs = pp.executeQuery();
-            if(rs.next()){
-                answer = true;
-            }
-            SQL.getSqlOBJ().removeConnectionSQL();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return answer;
-    }
 }
 

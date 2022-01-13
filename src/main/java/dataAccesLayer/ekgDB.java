@@ -1,9 +1,13 @@
 package dataAccesLayer;
 
+import model.ekgSession;
+import model.ekgSessionList;
+
 import javax.ws.rs.WebApplicationException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 public class ekgDB {
@@ -46,7 +50,44 @@ public class ekgDB {
             e.printStackTrace();
         }
         SQL.getSqlOBJ().removeConnectionSQL();
+        System.out.println(Arrays.toString(List));
         return List;
+    }
+
+    public static ekgSessionList getSessionsJson(int ID, String CPR){
+        ekgSessionList liste = new ekgSessionList();
+        System.out.println("variabler: " + ID + CPR);
+        try{
+            SQL.getSqlOBJ().makeConnectionSQL();
+            PreparedStatement prep = SQL.getSqlOBJ().myConn.prepareStatement("SELECT * FROM gruppe2DB.sessionData WHERE patientID = ?;");
+            prep.setString(1, String.valueOf(ID));
+            ResultSet rs = prep.executeQuery();
+
+            while (rs.next()) {
+                ekgSession ekgsession = new ekgSession();
+
+                /*List<String> markers;
+                for (int i = 0; i < ; i++) {
+                    markers.addMarker(rs.getString(4).split(","));
+                }*/
+
+                ekgsession.setSessionID(rs.getInt(1));
+                ekgsession.setCpr(CPR);
+                ekgsession.setTimeStart(rs.getString(3));
+                //ekgsession.setMarkers();
+                ekgsession.setComment(rs.getString(5));
+
+                System.out.println(ekgsession);
+                liste.addEkgSession(ekgsession);
+                System.out.println(liste.getEkgSessionList().toString());
+            }
+            System.out.println("step3");
+            SQL.getSqlOBJ().removeConnectionSQL();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return liste;
     }
 
     public static int getNewestSession(int patientID) {
@@ -101,6 +142,59 @@ public class ekgDB {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public static int getID(String cpr) {
+        int id = 0;
+
+        try {
+            SQL.getSqlOBJ().makeConnectionSQL();
+
+            PreparedStatement pp = SQL.getSqlOBJ().myConn.prepareStatement("SELECT * FROM gruppe2DB.patient WHERE cpr = ?;");
+            pp.setString(1, cpr);
+
+            ResultSet rs = pp.executeQuery();
+            rs.next();
+            id = rs.getInt(1);
+            System.out.println("hentede succesfuldt id: " + id);
+            SQL.getSqlOBJ().removeConnectionSQL();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+    public static void createNewPatient(String cpr) {
+        PreparedStatement pp = null;
+        try {
+            SQL.getSqlOBJ().makeConnectionSQL();
+            pp = SQL.getSqlOBJ().myConn.prepareStatement("INSERT INTO gruppe2DB.patient (`cpr`) values(?);");
+            pp.setString(1, cpr);
+            pp.execute();
+
+            SQL.getSqlOBJ().removeConnectionSQL();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean doesPatientExist(String cpr) {
+        boolean answer = false;
+        try {
+            SQL.getSqlOBJ().makeConnectionSQL();
+
+            PreparedStatement pp = SQL.getSqlOBJ().myConn.prepareStatement("SELECT * FROM gruppe2DB.patient WHERE cpr = ?;");
+            pp.setString(1, cpr);
+            ResultSet rs = pp.executeQuery();
+            if(rs.next()){
+                answer = true;
+            }
+            SQL.getSqlOBJ().removeConnectionSQL();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return answer;
     }
 
 

@@ -35,7 +35,8 @@ function fetchfunction(grp) {
 }
 
 function displaydata(data) {
-    if(1 < data.aftaleListe.aftale.length) {
+    console.log(data.aftaleListe)
+    if(data.aftaleListe.aftale != null) {
         createList(data);
     }else{
         createSingle(data);
