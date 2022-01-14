@@ -37,6 +37,27 @@ body {
     transform: translateY(4px);
 }
 
+/* klasser til sessions knapper */
+.button2 {
+    margin: 10px;
+    border: 1px solid rgb(11, 71, 144);
+    background-color: rgb(11, 71, 144);
+    color: white;
+    height: 50px;
+    width: 250px;
+    font-family: "Times New Roman", sans-serif;
+}
+
+.button2:hover {
+    background-color: dodgerblue;
+}
+
+.button2:active {
+    background-color: dodgerblue;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
 
 .tilbageknap {
     position: absolute;
@@ -95,7 +116,7 @@ body {
     margin: 1px;
     top: 145px;
     width: 300px;
-    height: 50%;
+    min-height: 60%;
     padding: 5px;
     background: grey;
     color: black;

@@ -14,32 +14,30 @@ let data = {
             backgroundColor: 'rgb(11,71,144)',
             borderColor: 'rgb(11,71,144)',
             color: 'rgb(11,71,144)',
-            data:[-0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03],
+            data:[],
             tension: 1,
             pointRadius: 0.5,
             pointHoverRadius: 0.5
         }
     ]
 }
-data.labels = Array(data.datasets[0].data.length).fill("");
 
+function createChart(){
+    let ctx = document.getElementById("myChart").getContext("2d")
+    let array = [-0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03];
 
-window.onload = (function (){
-    let canvas = document.getElementById("myChart");
-    let context = canvas.getContext("2d");
+    data.datasets[0].data = array;
+    data.labels = Array(data.datasets[0].data.length).fill("");
 
-    context.moveTo(0,300);
-
-    for (let i = 0; i < data.length; i++) {
-        context.lineTo(i, 300 - data[i] * 100);
-        context.stroke();
-    }
-    const myChart = new Chart(canvas,{
+    const myChart = new Chart(ctx,{
         type: 'line',
         data: data,
         option: {}
-    }
-    );
+    });
+}
+
+window.onload = (function (){
+    createChart();
 });
 
 
@@ -61,22 +59,27 @@ function createSession(data) {
     let note = "";
     let klinikID = "";
     let container = "";
+    // først ryddes feltet hvis der skulle være sessioner fra tidligere søgninger
+    document.getElementById("sessionsfelt").innerHTML ="";
 
-    for (i = 0; i < data.ekgSessionList.length; i++) {
+    // sessions listen køres igennem og konstruere en button for hver session
+    for (let i = 0; i < data.ekgSessionList.length; i++) {
         timestart = data.ekgSessionList[i].timeStart;
         sesionID = data.ekgSessionList[i].sessionID;
-        marker = data.ekgSessionList[i].markers;
-        note = data.ekgSessionList[i].comment;
-        //klinikID = data.ekgSessionList[i].klinikID;
-        //console.log(klinikID);
+        //marker = data.ekgSessionList[i].markers;
+        //note = data.ekgSessionList[i].comment;
 
-        let buffer = '<span class="button1" id="session' + i + '" hidden>KlinikID: ' + klinikID
-            +'      '+ 'Sessionid: ' + sesionID + '<br> Marker:<br><p id="marker' + i + '">' + marker
-            + '</p><br> Note:<br><textarea style="width: 225px" id="textarea' + i + '">' + note
-            + '</textarea><hr></span>';
+        let buffer = "klinik id: " + klinikID + " sessionID: " + sesionID;
 
-        container += buffer;
+        let btn = document.createElement("button");
+        btn.innerHTML = buffer;
+        btn.setAttribute("session", sesionID);
+        btn.className = "button2";
+        btn.onclick = function () {
+            alert("plot session: " + btn.getAttribute("session"));
+        };
+        document.getElementById("sessionsfelt").appendChild(btn);
+
     }
 
-    document.getElementById("sessionsfelt").innerText = container;
 }
