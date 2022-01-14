@@ -13,37 +13,40 @@ let data = {
         {label:"ekg",
             backgroundColor: 'rgb(11,71,144)',
             borderColor: 'rgb(11,71,144)',
-            data:[-0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03]
+            color: 'rgb(11,71,144)',
+            data:[-0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03, -0.01, -0.02, -0.03, 0.01, 0.02, 0.03],
+            tension: 1,
+            pointRadius: 0.5,
+            pointHoverRadius: 0.5
         }
     ]
 }
-data.labels = Array(data.datasets[0].data.length).fill("")
-
-const config = {
-    type: 'line',
-    data: data,
-    options: {}
-}
+data.labels = Array(data.datasets[0].data.length).fill("");
 
 
 window.onload = (function (){
-    let canvas = document.getElementById("mycanvas");
+    let canvas = document.getElementById("myChart");
     let context = canvas.getContext("2d");
+
     context.moveTo(0,300);
+
     for (let i = 0; i < data.length; i++) {
         context.lineTo(i, 300 - data[i] * 100);
         context.stroke();
     }
-
-    const myChart = new Chart(
-        document.getElementById('myChart'),
-       config
-    )
+    const myChart = new Chart(canvas,{
+        type: 'line',
+        data: data,
+        option: {}
+    }
+    );
 });
+
+
 
 async function getSessions(){
     /*url skal ændres til database til cpr*/
-    await fetch("/data/ekgSessionsJson?" + new URLSearchParams({
+    await fetch("data/ekgSessions/ekgSessionJson?" + new URLSearchParams({
         cpr: document.getElementById("cpr").value
     }), {
         headers: {
@@ -64,16 +67,16 @@ function createSession(data) {
         sesionID = data.ekgSessionList[i].sessionID;
         marker = data.ekgSessionList[i].markers;
         note = data.ekgSessionList[i].comment;
-        klinikID = data.ekgSessionList[i].klinikID;
-        console.log(klinikID);
+        //klinikID = data.ekgSessionList[i].klinikID;
+        //console.log(klinikID);
 
-        let buffer = '<span class="commentbox" id="comment' + i + '" hidden>KlinikID: ' + klinikID
-            +'      '+ 'Sessionid: ' + sesid + '<br> Marker:<br><p id="marker' + i + '">' + marker
+        let buffer = '<span class="button1" id="session' + i + '" hidden>KlinikID: ' + klinikID
+            +'      '+ 'Sessionid: ' + sesionID + '<br> Marker:<br><p id="marker' + i + '">' + marker
             + '</p><br> Note:<br><textarea style="width: 225px" id="textarea' + i + '">' + note
             + '</textarea><hr></span>';
 
         container += buffer;
     }
 
-    document.getElementById("myDropdown").innerText = container;
+    document.getElementById("sessionsfelt").innerText = container;
 }
