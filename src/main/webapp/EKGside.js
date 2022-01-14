@@ -40,8 +40,6 @@ window.onload = (function (){
     createChart();
 });
 
-
-
 async function getSessions(){
     /*url skal ændres til database til cpr*/
     await fetch("data/ekgSessions/ekgSessionJson?" + new URLSearchParams({
@@ -79,7 +77,5 @@ function createSession(data) {
             alert("plot session: " + btn.getAttribute("session"));
         };
         document.getElementById("sessionsfelt").appendChild(btn);
-
     }
-
 }
