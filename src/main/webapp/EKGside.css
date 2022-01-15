@@ -1,6 +1,4 @@
 
-
-
 /* baggrund */
 *{
     margin: 0;
@@ -17,6 +15,19 @@ body {
     padding-left: 1%;
     padding-top: 1%;
     position: relative;
+}
+
+#tilbageknap {
+    position: fixed;
+    right: 1%;
+    top: 1%;
+    width: 100px;
+}
+#searchCPR{
+    width: 50px
+}
+#cpr{
+    height: 30px;
 }
 /* classer til standard knap */
 .button1 {
@@ -44,7 +55,7 @@ body {
     background-color: rgb(11, 71, 144);
     color: white;
     height: 50px;
-    width: 250px;
+    width: 90%;
     font-family: "Times New Roman", sans-serif;
 }
 
@@ -59,53 +70,17 @@ body {
 }
 
 
-.tilbageknap {
-    position: absolute;
-    right: 88px;
-    top: 65px;
-    width: 100px;
-    height: 40px;
-    padding: 5px;
-    /*border: 5px;*/
-    border-style: solid;
-    border-width: medium;
-    border-color: black;
-    text-align: center;
-    display: inline-block;
-    font-size: 12px;
-
-}
-
-.marker{
-    position: fixed;
-    right: 88px;
-    bottom: 20px;
-    top: 145px;
-    width: 100px;
-    height: 40px;
-    padding: 5px;
-    /*border: 5px;*/
-    border-style: solid;
-    border-width: medium;
-    border-color: black;
-
-    background-color: rgb(11, 71, 144);
-    color: white;
-
-    text-align: center;
-    display: inline-block;
-    font-size: 12px;
-}
 /* indstillinger til grafen */
 #myChart {
-    left: 380px;
+    left: 17%;
+    right: 17%;
     background-color: ghostwhite;
     position: absolute;
     border:1px solid #000000;
     border-radius: 5px;
     top: 145px;
 
-    max-width: 60%;
+    max-width: 65%;
     max-height: 60%;
 }
 
@@ -115,9 +90,40 @@ body {
     border: 1px;
     margin: 1px;
     top: 145px;
-    width: 300px;
+    width: 15%;
     min-height: 60%;
     padding: 5px;
     background: grey;
     color: black;
+    left: 1%;
+    grid-template-rows: max-content;
+}
+
+.commentField{
+    position: fixed;
+    border: 1px;
+    margin: 1px;
+    top: 145px;
+    width: 15%;
+    min-height: 210px;
+    padding: 5px;
+    background: grey;
+    color: black;
+    right: 1%;
+    grid-template-rows: max-content;
+}
+.comment{
+    width: 100%;
+    min-height: 200px;
+    padding: 2px 2px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+}
+#commentButton{
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    left: 1px;
 }

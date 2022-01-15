@@ -1,5 +1,6 @@
 package dataAccesLayer;
 
+import model.ekgMeasurements;
 import model.ekgSession;
 import model.ekgSessionList;
 
@@ -67,6 +68,7 @@ public class ekgDB {
 
                 ekgsession.setSessionID(rs.getInt(1));
                 ekgsession.setCpr(CPR);
+                // mangler markers
                 ekgsession.setTimeStart(rs.getString(3));
                 ekgsession.setComment(rs.getString(5));
 
@@ -101,22 +103,24 @@ public class ekgDB {
         return newestSession;
     }
 
-    public static double getMeasurementFromSession(int sessionID) {
-        double measurement = 0;
+    public static ekgMeasurements getMeasurementFromSession(int sessionID) {
+        ekgMeasurements ekgM = new ekgMeasurements();
         try {
             SQL.getSqlOBJ().makeConnectionSQL();
             PreparedStatement prep = SQL.getSqlOBJ().myConn.prepareStatement("SELECT * FROM gruppe2DB.EkgData WHERE sessionID = ?;");
             prep.setString(1, String.valueOf(sessionID));
             ResultSet rs = prep.executeQuery();
 
-            rs.next();
-            measurement = rs.getDouble(1);
+            while(rs.next()){
+                ekgM.addMeasurments(rs.getDouble(1));
+            }
+
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         SQL.getSqlOBJ().removeConnectionSQL();
-        return measurement;
+        return ekgM;
     }
 
     public static void createNewSession(int patientID) {
@@ -154,10 +158,9 @@ public class ekgDB {
     }
 
     public static void createNewPatient(String cpr) {
-        PreparedStatement pp = null;
         try {
             SQL.getSqlOBJ().makeConnectionSQL();
-            pp = SQL.getSqlOBJ().myConn.prepareStatement("INSERT INTO gruppe2DB.patient (`cpr`) values(?);");
+            PreparedStatement pp = SQL.getSqlOBJ().myConn.prepareStatement("INSERT INTO gruppe2DB.patient (`cpr`) values(?);");
             pp.setString(1, cpr);
             pp.execute();
 
@@ -186,5 +189,22 @@ public class ekgDB {
         return answer;
     }
 
+    public static void insertSessionNote(String note, int ID){
+
+        try {
+            SQL.getSqlOBJ().makeConnectionSQL();
+            PreparedStatement pp = SQL.getSqlOBJ().myConn.prepareStatement(" UPDATE gruppe2DB.sessionData SET comment = ? WHERE (sessionID = ?);");
+            pp.setString(1, note);
+            pp.setInt(2, ID);
+            pp.execute();
+
+
+            SQL.getSqlOBJ().removeConnectionSQL();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
 }

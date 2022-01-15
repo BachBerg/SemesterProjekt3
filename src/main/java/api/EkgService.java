@@ -2,6 +2,7 @@ package api;
 
 
 import com.google.gson.Gson;
+import model.ekgMeasurements;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -12,6 +13,7 @@ import javax.ws.rs.core.HttpHeaders;
 import java.util.Arrays;
 
 import static controller.EkgController.*;
+import static dataAccesLayer.ekgDB.insertSessionNote;
 
 @Path("ekgSessions")
 public class EkgService {
@@ -28,7 +30,7 @@ public class EkgService {
     /* til at hente data fra vores server*/
     @Path("measurements")
     @GET
-    public double getEkgData(@QueryParam("sessionID") int sessionID) {
+    public ekgMeasurements getEkgData(@QueryParam("sessionID") int sessionID) {
         return getData(sessionID);
     }
 
@@ -43,5 +45,18 @@ public class EkgService {
     public String getSessionJson(@QueryParam("cpr") String cpr) {
         return new Gson().toJson(getAllSessionJson(cpr));
     }
+
+    /* til at hente data fra vores server*/
+    @Path("measurementsJson")
+    @GET
+    public String getEkgDataJson(@QueryParam("sessionID") int sessionID) {
+        return new Gson().toJson(getDataJson(sessionID));
+    }
+    @Path("ekgSessionNote")
+    @POST
+    public void setSessionNote(@QueryParam("note") String note, @QueryParam("sessionID") int sessionID) {
+        insertSessionNote(note, sessionID);
+    }
+
 
 }

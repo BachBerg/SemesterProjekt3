@@ -5,7 +5,6 @@ import model.Aftale;
 import model.AftaleListe;
 import model.User;
 
-import javax.ws.rs.WebApplicationException;
 import java.sql.*;
 
 public class SQL {
@@ -179,7 +178,7 @@ public class SQL {
     public AftaleListe getAftalerIDSearch(String ID) throws SQLException {
         System.out.println("returnere aftale liste til et id");
         SQL.getSqlOBJ().makeConnectionSQL();
-        PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.aftaler WHERE ID = ?;");
+        PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.aftaler WHERE patientID = ?;");
         AftaleListe aftaleListe = new AftaleListe();
         try {
             pp.setString(1, ID);

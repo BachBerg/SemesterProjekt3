@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import dataAccesLayer.SQL;
+import model.ekgMeasurements;
 import model.ekgSessionList;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -22,7 +22,8 @@ public class EkgController {
         return getSessionsID(ID);
     }
 
-    public static double getData(int sessionID) {
+    public static ekgMeasurements getData(int sessionID) {
+        System.out.println(sessionID);
         return getMeasurementFromSession(sessionID);
     }
 
@@ -50,6 +51,11 @@ public class EkgController {
     public static ekgSessionList getAllSessionJson(String cpr){
         int ID = getID(cpr);
         return getSessionsJson(ID, cpr);
+    }
+
+    public static ekgMeasurements getDataJson(int sessionID) {
+        System.out.println(sessionID);
+        return getMeasurementFromSession(sessionID);
     }
 
 }

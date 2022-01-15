@@ -15,18 +15,27 @@
 <div>
     <label for="cpr"></label>
     <input type="text" id="cpr" placeholder="Indtast CPR" class="cpr">
-    <button name="sogCPR" class="button1" type="button" onclick="getSessions()">Søg</button>
+    <button id="searchCPR" class="button1" type="button" onclick="getSessions()">Søg</button>
 </div>
 
 <div>
-    <button name="Marker" class="marker" type="button" onclick="MarkerFunktion()">Marker</button>
-</div>
-<div>
-    <button name="tilbageknap" class="tilbageknap" type="button" onclick="window.location.replace('StartSide.html')"> Tilbage </button>
+    <button id="tilbageknap" class="button1" type="button" onclick="window.location.replace('StartSide.html')"> Tilbage </button>
 </div>
 
 <div class="sessionsfelt" id="sessionsfelt"></div>
-
+<div class="commentField" id="commentField">
+    <div class="row">
+        <h2 id="titel">Kommentarfelt</h2>
+    </div>
+    <div class="row">
+        <label for="comment">
+            <textarea id="comment" placeholder="kommentar til ekg" class="comment"></textarea>
+        </label>
+    </div>
+    <div class="row">
+        <button id="commentButton" class="button1" type="button" onclick="savaEditedComment()">Gem</button>
+    </div>
+</div>
 
 <canvas id="myChart"></canvas>
 
