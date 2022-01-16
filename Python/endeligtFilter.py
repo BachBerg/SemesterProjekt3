@@ -14,10 +14,12 @@ import json
 import wfdb
 
 
-# Read the two ECG signals (raw, filtered) and read
+# Read the two ECG signals (raw, filtered) and read 
 # the related information.
-signals, info = wfdb.rdsamp('rec_2', channels=[0, 1],
+#indlæs signalet (råt ufilteret)
+signals, info = wfdb.rdsamp('rec_5', channels=[0, 1], 
                               sampfrom=0, sampto=2000)
+
 
 Fs=500
 Ts=1/Fs
@@ -26,14 +28,15 @@ Ts=1/Fs
 t=np.arange(0,2000*Ts,Ts)
 
 
-
+#ecg 0 er rå signal
+#ecg 1 er filtreret signal
 ecg0 = signals[:,0]
 ecg1 = signals[:,1]
 
 
-#plot signal i tidsdomænet
+#plot signal i tidsdomænet 
 
-plt.title('ekg med støj')
+plt.title('EKG med støj')
 plt.xlabel('tid(s)')
 plt.ylabel('mV')
 plt.plot(t,ecg0)
@@ -41,7 +44,7 @@ plt.show()
 
 
 #ekg uden støj ecg1
-plt.title('ekg uden støj')
+plt.title('EKG uden støj')
 plt.xlabel('tid(s)')
 plt.ylabel('mV')
 plt.plot(t,ecg1)
@@ -50,7 +53,7 @@ plt.show()
 numtaps = 301
 
 
-# HighPass FIR - Filter
+# HighPass FIR - Filter 
 
 
 signal.firwin
@@ -60,11 +63,9 @@ plt.plot(t,Filteretsignal)
 plt.show()
 
 
-#frekvensdomænet
-plt.magnitude_spectrum(ecg0, Fs)
+#Plot signal i frekvensdomænet
+plt.magnitude_spectrum(ecg0, Fs,color="black" )
 plt.title('Frekvensdomænet')
-#plt.plot(ecg0, Fs)
-
 plt.show()
 
 
@@ -77,7 +78,7 @@ f1=60
 
 
 
-#notch filter til at fjerne baseline wander
+#notch filter til at fjerne baseline wander 
 #Q = w0/bw. 0,6/5 (Q værdi)
 Q1=0.6/5
 
@@ -146,6 +147,8 @@ Z=np.array((1/8,1/8,1/8,1/8,1/8,1/8,1/8,1/8))
 FilteretEMG=signal.filtfilt(Z,1,FilteretUBP)
 
 
+#plotte filteret ecg1 =pink
+
 plt.plot(t,FilteretEMG)
 plt.plot(t,ecg1,color='pink')
 plt.title('Tidsdomæne')
@@ -154,7 +157,7 @@ plt.xlabel('mV')
 plt.show()
 
 
-#frekvensdomænet
+#signal i frekvensdomænet
 plt.magnitude_spectrum(FilteretEMG,Fs)
 plt.title('EKG uden EMG støj')
 plt.show()
@@ -162,18 +165,18 @@ plt.show()
 
 
 
-
 endpoint = "http://localhost:8080/Semesterprojekt3_war/data/ekgSessions"
 
 
-cpr= "1234567890" #CPR
+cpr= "1111111111" #CPR
 Headers={'Authorization': 'Bearer hemmeliglogin', #Loginkode
-         'Identifier': cpr}
+         'Identifier': cpr} 
 
-
+  
 # Post request, med endpoint, dataen og headers til genkendelse og sikkerhed.
 r = requests.post(endpoint,  data = json.dumps(FilteretEMG.tolist()), headers = Headers )
-
-#Modtage responbesked
+  
+#Modtage responbesked 
 Response = r.text
 print(Response)
+

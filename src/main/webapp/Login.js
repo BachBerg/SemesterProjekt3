@@ -56,7 +56,7 @@ function tokenHandler(loginToken) {
         // hvis vi får en token, gemmer vi den i browserens localstorage
         localStorage.setItem("token", loginToken);
 
-        fetch("http://localhost:8080/Semesterprojekt3_war/data/login/auth", {
+        fetch("data/login/auth", {
             headers: {
                 "Authorization": localStorage.getItem("token")
             }

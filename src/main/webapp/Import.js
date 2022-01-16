@@ -24,7 +24,7 @@ window.onclick = function (event) {
 function fetchfunction(grp) {
     document.getElementById("tekstfelt").innerHTML ="";
     let cpr = document.getElementById("cpr").value;
-    fetch("http://localhost:8080/Semesterprojekt3_war/data/import?" + new URLSearchParams({
+    fetch("data/import?" + new URLSearchParams({
         grp : grp,
         CPR : cpr
     }),{

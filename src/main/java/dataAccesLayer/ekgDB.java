@@ -33,29 +33,7 @@ public class ekgDB {
         }
     }
 
-    public static int[] getSessionsID(int patientID) {
-        int[] List = new int[20];
-        int i = 0;
-
-        try {
-            SQL.getSqlOBJ().makeConnectionSQL();
-            PreparedStatement prep = SQL.getSqlOBJ().myConn.prepareStatement("SELECT * FROM gruppe2DB.sessionData WHERE patientID = ?;");
-            prep.setString(1, String.valueOf(patientID));
-            ResultSet rs = prep.executeQuery();
-
-            while (rs.next()) {
-                List[i] = rs.getInt(1);
-                i++;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        SQL.getSqlOBJ().removeConnectionSQL();
-        System.out.println(Arrays.toString(List));
-        return List;
-    }
-
-    public static ekgSessionList getSessionsJson(int ID, String CPR){
+    public static ekgSessionList getSessions(int ID, String CPR){
         ekgSessionList liste = new ekgSessionList();
         try{
             SQL.getSqlOBJ().makeConnectionSQL();
@@ -65,13 +43,11 @@ public class ekgDB {
 
             while (rs.next()) {
                 ekgSession ekgsession = new ekgSession();
-
                 ekgsession.setSessionID(rs.getInt(1));
                 ekgsession.setCpr(CPR);
-                // mangler markers
                 ekgsession.setTimeStart(rs.getString(3));
+                ekgsession.setMarkers(null);
                 ekgsession.setComment(rs.getString(5));
-
                 liste.addEkgSession(ekgsession);
             }
             SQL.getSqlOBJ().removeConnectionSQL();
@@ -149,11 +125,12 @@ public class ekgDB {
             ResultSet rs = pp.executeQuery();
             rs.next();
             id = rs.getInt(1);
-            System.out.println("hentede succesfuldt id: " + id);
+
             SQL.getSqlOBJ().removeConnectionSQL();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println("hentede succesfuldt id: " + id);
         return id;
     }
 

@@ -21,6 +21,7 @@ public class SQL {
     private final String url = "jdbc:mysql://130.225.170.204:3306/gruppe2DB";
     private final String DatabaseUser = "gruppe2";
     private final String DatabasePassword = "MisdannetHelLy";
+    //private final String DatabasePassword = System.getenv("sqlKode");
     // System.getenv("dbpass"); //tomcat system startups
     public Connection myConn;
     public Statement myStatement;
@@ -128,7 +129,6 @@ public class SQL {
     }
 
     public AftaleListe getAftalerListe() throws SQLException {
-        System.out.println("returnere aftale liste");
         SQL.getSqlOBJ().makeConnectionSQL();
         AftaleListe aftaleListe = new AftaleListe();
         String query = "SELECT * FROM gruppe2DB.aftaler;";
@@ -150,7 +150,6 @@ public class SQL {
             e.printStackTrace();
         }
         SQL.getSqlOBJ().removeConnectionSQL();
-        System.out.println("succes");
         return aftaleListe;
     }
 

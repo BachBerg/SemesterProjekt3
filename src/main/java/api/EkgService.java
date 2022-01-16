@@ -3,28 +3,27 @@ package api;
 
 import com.google.gson.Gson;
 import model.ekgMeasurements;
+import model.ekgSessionList;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import java.util.Arrays;
+import javax.ws.rs.core.MediaType;
 
 import static controller.EkgController.*;
 import static dataAccesLayer.ekgDB.insertSessionNote;
 
 @Path("ekgSessions")
+@Produces({MediaType.APPLICATION_XML})
 public class EkgService {
 
 
     /* metode der returnere de forskellige "recording/mållings sessioner som tilhøre en cpr*/
     @GET
-    public String getEkgSessions(@QueryParam("cpr") String cpr) {
-        int[] hvadermeningen = getSessions(cpr);
-        System.out.println(Arrays.toString(hvadermeningen));
-        return Arrays.toString(hvadermeningen);
+    public ekgSessionList getEkgSessions(@QueryParam("cpr") String cpr) {
+        ekgSessionList test = getAllSession(cpr);
+        System.out.println("her: " + test.getEkgSessionList().toString());
+        return test;
     }
 
     /* til at hente data fra vores server*/
@@ -43,14 +42,14 @@ public class EkgService {
     @Path("ekgSessionJson")
     @GET
     public String getSessionJson(@QueryParam("cpr") String cpr) {
-        return new Gson().toJson(getAllSessionJson(cpr));
+        return new Gson().toJson(getAllSession(cpr));
     }
 
     /* til at hente data fra vores server*/
     @Path("measurementsJson")
     @GET
     public String getEkgDataJson(@QueryParam("sessionID") int sessionID) {
-        return new Gson().toJson(getDataJson(sessionID));
+        return new Gson().toJson(getData(sessionID));
     }
     @Path("ekgSessionNote")
     @POST

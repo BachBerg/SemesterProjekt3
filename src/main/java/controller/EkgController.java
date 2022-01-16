@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import dataAccesLayer.ekgDB;
 import model.ekgMeasurements;
 import model.ekgSessionList;
 
@@ -15,12 +16,6 @@ import static dataAccesLayer.ekgDB.*;
 
 public class EkgController {
     /* klaser til at interagere med EkgService*/
-
-    public static int[] getSessions(String cpr) {
-        int ID = getID(cpr);
-
-        return getSessionsID(ID);
-    }
 
     public static ekgMeasurements getData(int sessionID) {
         System.out.println(sessionID);
@@ -47,15 +42,9 @@ public class EkgController {
         return "measurement: " + data;
     }
 
-
-    public static ekgSessionList getAllSessionJson(String cpr){
+    public static ekgSessionList getAllSession(String cpr){
         int ID = getID(cpr);
-        return getSessionsJson(ID, cpr);
-    }
-
-    public static ekgMeasurements getDataJson(int sessionID) {
-        System.out.println(sessionID);
-        return getMeasurementFromSession(sessionID);
+        return ekgDB.getSessions(ID, cpr);
     }
 
 }

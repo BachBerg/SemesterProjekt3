@@ -5,11 +5,9 @@ if (!tok) {
 document.getElementById("brugernavn").innerText = sessionStorage.getItem("user");
 
 function hentAftaleFecth(from, to) {
-    let fra = from;
-    let til = to;
-    fetch("http://localhost:8080/Semesterprojekt3_war/data/aftaler/aftalerSQL?" + new URLSearchParams({
-        from: fra,
-        to: til,
+    fetch("data/aftaler/aftalerSQL?" + new URLSearchParams({
+        from: from,
+        to: to,
         cpr: sessionStorage.getItem("user")
 
     }), {
@@ -134,7 +132,7 @@ function setdates(year, month, day) {
 
 //Pop-up journal
 function postAftale() {
-    fetch("http://localhost:8080/Semesterprojekt3_war/data/aftaler/aftalerSQL?" + new URLSearchParams({
+    fetch("data/aftaler/aftalerSQL?" + new URLSearchParams({
         cpr: document.getElementById("cpr").value,
         //name: document.getElementById("navn").value,
         timestart: document.getElementById("timeStart").value,
