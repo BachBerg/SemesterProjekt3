@@ -8,7 +8,6 @@ import javax.ws.rs.WebApplicationException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 
 public class ekgDB {
@@ -48,6 +47,7 @@ public class ekgDB {
                 ekgsession.setTimeStart(rs.getString(3));
                 ekgsession.setMarkers(null);
                 ekgsession.setComment(rs.getString(5));
+                ekgsession.setGruppeID(2);
                 liste.addEkgSession(ekgsession);
             }
             SQL.getSqlOBJ().removeConnectionSQL();

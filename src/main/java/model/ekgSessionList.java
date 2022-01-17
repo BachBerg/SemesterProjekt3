@@ -17,7 +17,7 @@ public class ekgSessionList {
         this.ekgSessionList = ekgSessionList;
     }
 
-    @XmlElement(name = "ekgSessions")
+    @XmlElement(name = "ekgSession")
     List<ekgSession> ekgSessionList = new ArrayList<>();
 
     public void addEkgSession(ekgSession ekgses) {

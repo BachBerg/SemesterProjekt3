@@ -15,6 +15,7 @@ public class ekgSession {
     private String timeStart;
     private List<String> markers;
     private String comment;
+    private int gruppeID;
 
     @Override
     public String toString() {
@@ -24,6 +25,7 @@ public class ekgSession {
                 ", timeStart='" + timeStart + '\'' +
                 ", markers=" + markers +
                 ", comment='" + comment + '\'' +
+                ", gruppeID='" + gruppeID + '\'' +
                 '}';
     }
 
@@ -69,5 +71,13 @@ public class ekgSession {
 
     public void setMarkers(List<String> markers) {
         this.markers = markers;
+    }
+
+    public int getGruppeID() {
+        return gruppeID;
+    }
+
+    public void setGruppeID(int gruppeID) {
+        this.gruppeID = gruppeID;
     }
 }

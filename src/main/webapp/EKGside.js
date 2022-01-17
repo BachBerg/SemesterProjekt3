@@ -67,6 +67,7 @@ function createSession(data) {
         sessID = data.ekgSessionList[i].sessionID;
         cpr = data.ekgSessionList[i].cpr;
         note = data.ekgSessionList[i].comment;
+        gruppe = data.ekgSessionList[i].gruppeID;
 
         let buffer = "CPR: " + cpr + " sessionID: " + sessID;
 
@@ -74,9 +75,10 @@ function createSession(data) {
         btn.innerHTML = buffer;
         btn.setAttribute("session", sessID);
         btn.setAttribute("comment", note);
+        btn.setAttribute("gruppeID", gruppe);
         btn.className = "button2";
         btn.onclick = function () {
-            getSessionData(btn.getAttribute("session"));
+            getSessionData(btn.getAttribute("session"),btn.getAttribute("gruppeID"));
             setNewComment(btn.getAttribute("comment"), btn.getAttribute("session"));
         };
         document.getElementById("sessionsfelt").appendChild(div);
@@ -84,9 +86,10 @@ function createSession(data) {
     }
 }
 
-function getSessionData(ID) {
+function getSessionData(ID, gruppe) {
     fetch("data/ekgSessions/measurementsJson?" + new URLSearchParams({
-        sessionID: ID
+        sessionID: ID,
+        gruppeID: gruppe
     }), {
         headers: {
             "Authorization": localStorage.getItem("token")

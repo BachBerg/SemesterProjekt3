@@ -16,16 +16,15 @@ public class apiDAO {
         return apiDAOOBJ;
     }
 
-    public JSONObject getJsonOBJ(String http) {
-        JSONObject s = (XML.toJSONObject(getString(http)));
+    public JSONObject getJsonOBJ(String http, String auth) {
+        JSONObject s = (XML.toJSONObject(getString(http, auth)));
         return s;
     }
 
-    public String getString(String http) {
+    public String getString(String http, String auth) {
         String s = null;
         try {
-            s = Unirest.get(http).basicAuth("Authorization","hemmeliglogin").asString().getBody();
-
+            s = Unirest.get(http).header("Authorization","Bearer" + auth).asString().getBody();
             return s;
         } catch (UnirestException e) {
             e.printStackTrace();

@@ -18,7 +18,7 @@ import static dataAccesLayer.ekgDB.insertSessionNote;
 public class EkgService {
 
 
-    /* metode der returnere de forskellige "recording/mållings sessioner som tilhøre en cpr*/
+    /* endpoint til at hente sessioner fra vores server i form af xml*/
     @GET
     public ekgSessionList getEkgSessions(@QueryParam("cpr") String cpr) {
         ekgSessionList test = getAllSession(cpr);
@@ -26,7 +26,7 @@ public class EkgService {
         return test;
     }
 
-    /* til at hente data fra vores server*/
+    /* endpoint til at hente data fra vores server i form af xml*/
     @Path("measurements")
     @GET
     public ekgMeasurements getEkgData(@QueryParam("sessionID") int sessionID) {
@@ -39,18 +39,21 @@ public class EkgService {
         return newData(data, httpHeaders);
     }
 
+    /* endpoint til at hente alle sessioner til et givent cpr*/
     @Path("ekgSessionJson")
     @GET
     public String getSessionJson(@QueryParam("cpr") String cpr) {
-        return new Gson().toJson(getAllSession(cpr));
+        return new Gson().toJson(getAllSessionJson(cpr));
     }
 
-    /* til at hente data fra vores server*/
+    /* til at hente hente data fra i form af et json objekt */
     @Path("measurementsJson")
     @GET
-    public String getEkgDataJson(@QueryParam("sessionID") int sessionID) {
-        return new Gson().toJson(getData(sessionID));
+    public String getEkgDataJson(@QueryParam("sessionID") int sessionID, @QueryParam("gruppeID") int gruppeID) {
+        return new Gson().toJson(getDataJson(sessionID, gruppeID));
     }
+
+    /* metode til at opdatere note til en session */
     @Path("ekgSessionNote")
     @POST
     public void setSessionNote(@QueryParam("note") String note, @QueryParam("sessionID") int sessionID) {
