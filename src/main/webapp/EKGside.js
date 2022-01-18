@@ -67,18 +67,17 @@ function createSession(data) {
         sessID = data.ekgSessionList[i].sessionID;
         cpr = data.ekgSessionList[i].cpr;
         note = data.ekgSessionList[i].comment;
-        gruppe = data.ekgSessionList[i].gruppeID;
 
         let buffer = "CPR: " + cpr + " sessionID: " + sessID;
 
         let btn = document.createElement("button");
         btn.innerHTML = buffer;
+        btn.id = "btn"+sessID;
         btn.setAttribute("session", sessID);
         btn.setAttribute("comment", note);
-        btn.setAttribute("gruppeID", gruppe);
         btn.className = "button2";
         btn.onclick = function () {
-            getSessionData(btn.getAttribute("session"),btn.getAttribute("gruppeID"));
+            getSessionData(btn.getAttribute("session"));
             setNewComment(btn.getAttribute("comment"), btn.getAttribute("session"));
         };
         document.getElementById("sessionsfelt").appendChild(div);
@@ -86,10 +85,9 @@ function createSession(data) {
     }
 }
 
-function getSessionData(ID, gruppe) {
+function getSessionData(ID) {
     fetch("data/ekgSessions/measurementsJson?" + new URLSearchParams({
         sessionID: ID,
-        gruppeID: gruppe
     }), {
         headers: {
             "Authorization": localStorage.getItem("token")
@@ -100,6 +98,10 @@ function getSessionData(ID, gruppe) {
 function setNewComment(newComment, sessionID) {
     document.getElementById("comment").value = newComment;
     document.getElementById("comment").setAttribute("session", sessionID);
+
+
+
+
 }
 
 function savaEditedComment() {
@@ -115,4 +117,5 @@ function savaEditedComment() {
             "Authorization": localStorage.getItem("token")
         }
     });
+    document.getElementById("btn"+newSessID).setAttribute("comment",newNote);
 }

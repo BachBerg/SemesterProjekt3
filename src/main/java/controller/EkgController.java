@@ -28,10 +28,16 @@ public class EkgController {
         JsonArray Jarray = Jelement.getAsJsonArray();
         List<Double> liste = new Gson().fromJson(Jarray, ArrayList.class);
 
-        System.out.println("array lsiten: " + liste.toString());
-        System.out.println("cpr: " + httpHeaders.getRequestHeader("Identifier").get(0));
+        String cpr = httpHeaders.getRequestHeader("Identifier").get(0);
 
-        int patientID = getID(httpHeaders.getRequestHeader("Identifier").get(0));
+        System.out.println("array lsiten: " + liste.toString());
+        System.out.println("cpr: " + cpr);
+
+        Integer patientID = getID(cpr);
+        if(patientID == null){
+            createNewPatient(cpr);
+            patientID = getID(cpr);
+        }
 
         // først laves der en ny session
         createNewSession(patientID);
@@ -46,28 +52,24 @@ public class EkgController {
         return getMeasurementFromSession(sessionID);
     }
 
-    public static ekgMeasurements getDataJson(int sessionID, int gruppeID) {
-        ekgMeasurements measOBJ = new ekgMeasurements();
-        if (gruppeID == 2){
-            return getMeasurementFromSession(sessionID);
-        }
+    public static ekgMeasurements getDataJson(int sessionID) {
+        //ekgMeasurements measOBJ = new ekgMeasurements();
+
         /*if(gruppeID == 3){
             //JSONObject grp3 = apiDAO.getApiDAOOBJ().getJsonOBJ("https://ekg3.diplomportal.dk/data/measurements?sessionID=" + sessionID,+System.getenv("apiKey"));
             for (int i = 0; i < grp3.getJSONObject("measurements").getJSONArray("measurment").length(); i++) {
                 measOBJ.addMeasurments(grp3.getJSONObject("measurements").getJSONArray("measurment").getDouble(i));
             }
         }*/
-
-        return  measOBJ;
+        return getMeasurementFromSession(sessionID);
     }
 
     public static ekgSessionList getAllSession(String cpr){
         int ID = getID(cpr);
         return ekgDB.getSessions(ID, cpr);
     }
+
     public static ekgSessionList getAllSessionJson(String cpr){
-        int ID = getID(cpr);
-        ekgSessionList newSessions = ekgDB.getSessions(ID, cpr);
 
         /* her henter vi sessioner fra de andre grupper, men i dette tilfælde kun gruppe 3 */
         //JSONObject grp3 = apiDAO.getApiDAOOBJ().getJsonOBJ("https://ekg3.diplomportal.dk/data/ekgSessions?cpr=" + cpr,(System.getenv("apiKey")));
@@ -76,7 +78,9 @@ public class EkgController {
             ekgSession.setGruppeID(3);
             newSessions.addEkgSession(ekgSession);
         }*/
-        return newSessions;
+
+        int ID = getID(cpr);
+        return ekgDB.getSessions(ID, cpr);
     }
 
 }

@@ -49,8 +49,8 @@ public class EkgService {
     /* til at hente hente data fra i form af et json objekt */
     @Path("measurementsJson")
     @GET
-    public String getEkgDataJson(@QueryParam("sessionID") int sessionID, @QueryParam("gruppeID") int gruppeID) {
-        return new Gson().toJson(getDataJson(sessionID, gruppeID));
+    public String getEkgDataJson(@QueryParam("sessionID") int sessionID) {
+        return new Gson().toJson(getDataJson(sessionID));
     }
 
     /* metode til at opdatere note til en session */

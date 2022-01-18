@@ -8,6 +8,7 @@ import javax.ws.rs.WebApplicationException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ekgDB {
@@ -45,9 +46,7 @@ public class ekgDB {
                 ekgsession.setSessionID(rs.getInt(1));
                 ekgsession.setCpr(CPR);
                 ekgsession.setTimeStart(rs.getString(3));
-                ekgsession.setMarkers(null);
                 ekgsession.setComment(rs.getString(5));
-                ekgsession.setGruppeID(2);
                 liste.addEkgSession(ekgsession);
             }
             SQL.getSqlOBJ().removeConnectionSQL();
@@ -113,8 +112,8 @@ public class ekgDB {
         }
     }
 
-    public static int getID(String cpr) {
-        int id = 0;
+    public static Integer getID(String cpr) {
+        Integer id = null;
 
         try {
             SQL.getSqlOBJ().makeConnectionSQL();
@@ -123,8 +122,10 @@ public class ekgDB {
             pp.setString(1, cpr);
 
             ResultSet rs = pp.executeQuery();
-            rs.next();
-            id = rs.getInt(1);
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+
 
             SQL.getSqlOBJ().removeConnectionSQL();
         } catch (SQLException e) {

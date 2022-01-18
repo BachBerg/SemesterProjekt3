@@ -1,0 +1,24 @@
+@startuml
+
+JavaScript -> EkgService : HTTP get
+EkgService -> EkgController : getSessionJson()
+EkgController ->> ekgDB : getAllSessionJson()
+
+JavaScript -> EkgService : HTTP get
+EkgService -> EkgController : getEkgDataJson()
+EkgController ->> ekgDB : getDataJson()
+
+entity      SQLDatabase      as sqldb
+ekgDB -> sqldb  : getSessions()
+ekgDB <<-- sqldb : Return
+EkgController <-- ekgDB : Return ekgSessionList
+EkgService <<-- EkgController : Return
+JavaScript <<-- EkgService : Return
+
+ekgDB -> sqldb  : getMeasurementFromSession()
+ekgDB <<-- sqldb : Return
+EkgController <-- ekgDB : Return ekgMeasurements
+EkgService <<-- EkgController : Return
+JavaScript <<-- EkgService : Return
+
+@enduml

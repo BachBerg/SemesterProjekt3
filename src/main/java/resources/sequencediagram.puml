@@ -1,7 +1,7 @@
 @startuml
 
 Python -> EkgService : HTTP Post
-EkgService -> EkgController : validate()
+EkgService -> EkgController : newData()
 EkgController ->> SQL : ekgCreateNew()
 
 EkgService <<-- EkgController : Return
