@@ -1,4 +1,3 @@
-
 //EKG visualisering
 let data = {
     datasets:
@@ -62,7 +61,7 @@ function createSession(data) {
     // sessions listen køres igennem og konstruere en button for hver session
     for (let i = 0; i < data.ekgSessionList.length; i++) {
         let div = document.createElement("div");
-        div.id="div"+i;
+        div.id = "div" + i;
 
         sessID = data.ekgSessionList[i].sessionID;
         cpr = data.ekgSessionList[i].cpr;
@@ -72,7 +71,7 @@ function createSession(data) {
 
         let btn = document.createElement("button");
         btn.innerHTML = buffer;
-        btn.id = "btn"+sessID;
+        btn.id = "btn" + sessID;
         btn.setAttribute("session", sessID);
         btn.setAttribute("comment", note);
         btn.className = "button2";
@@ -81,7 +80,7 @@ function createSession(data) {
             setNewComment(btn.getAttribute("comment"), btn.getAttribute("session"));
         };
         document.getElementById("sessionsfelt").appendChild(div);
-        document.getElementById("div"+i).appendChild(btn);
+        document.getElementById("div" + i).appendChild(btn);
     }
 }
 
@@ -100,8 +99,6 @@ function setNewComment(newComment, sessionID) {
     document.getElementById("comment").setAttribute("session", sessionID);
 
 
-
-
 }
 
 function savaEditedComment() {
@@ -117,5 +114,5 @@ function savaEditedComment() {
             "Authorization": localStorage.getItem("token")
         }
     });
-    document.getElementById("btn"+newSessID).setAttribute("comment",newNote);
+    document.getElementById("btn" + newSessID).setAttribute("comment", newNote);
 }

@@ -20,7 +20,7 @@ public class AuthFilter implements ContainerRequestFilter {
             if ("aftaler".equals(containerRequestContext.getUriInfo().getPath())
                     || "ekgSessions".equals(containerRequestContext.getUriInfo().getPath())
                     || "ekgSessions/measurements".equals(containerRequestContext.getUriInfo().getPath())) {
-                if (!containerRequestContext.getHeaderString("Authorization").equals("Bearer hemmeliglogin")) {
+                if (!containerRequestContext.getHeaderString("Authorization").equals("Bearer" + System.getenv("apiKey"))) {
                     throw new WebApplicationException("psst hvad er kodeordet?", 401);
                 }
                 /* ellers almindelig kontrol af login token */

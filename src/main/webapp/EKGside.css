@@ -17,7 +17,7 @@ body {
     position: relative;
 }
 
-#tilbageknap {
+#goBackButton {
     position: fixed;
     right: 1%;
     top: 1%;
@@ -85,7 +85,7 @@ body {
 }
 
 /* felt der skal indeholde sessioner*/
-.sessionsfelt{
+.sessionsField{
     position: fixed;
     border: 1px;
     margin: 1px;

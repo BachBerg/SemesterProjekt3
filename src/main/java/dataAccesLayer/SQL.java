@@ -20,9 +20,7 @@ public class SQL {
 
     private final String url = "jdbc:mysql://130.225.170.204:3306/gruppe2DB";
     private final String DatabaseUser = "gruppe2";
-    private final String DatabasePassword = "MisdannetHelLy";
-    //private final String DatabasePassword = System.getenv("sqlKode");
-    // System.getenv("dbpass"); //tomcat system startups
+    private final String DatabasePassword = System.getenv("sqlKode");
     public Connection myConn;
     public Statement myStatement;
 
