@@ -13,6 +13,7 @@ import java.util.List;
 
 public class ekgDB {
 
+    /* metode til at indsætte data i databasen, et størrer query bliver konstrueret, for at spare tid*/
     public static void insertEkgData(List<Double> measurements, int patientID, int sessionID) {
         String sqlQuery = "INSERT INTO gruppe2DB.EkgData(measurement , sessionID , patientID) values(" + measurements.get(0) + "," + sessionID + "," + patientID + ")";
 
@@ -34,7 +35,7 @@ public class ekgDB {
     }
 
     public static ekgSessionList getSessions(int ID, String CPR){
-        ekgSessionList liste = new ekgSessionList();
+        ekgSessionList ekgList = new ekgSessionList();
         try{
             SQL.getSqlOBJ().makeConnectionSQL();
             PreparedStatement prep = SQL.getSqlOBJ().myConn.prepareStatement("SELECT * FROM gruppe2DB.sessionData WHERE patientID = ?;");
@@ -47,13 +48,13 @@ public class ekgDB {
                 ekgsession.setCpr(CPR);
                 ekgsession.setTimeStart(rs.getString(3));
                 ekgsession.setComment(rs.getString(5));
-                liste.addEkgSession(ekgsession);
+                ekgList.addEkgSession(ekgsession);
             }
             SQL.getSqlOBJ().removeConnectionSQL();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return liste;
+        return ekgList;
     }
 
     public static int getNewestSession(int patientID) {

@@ -17,14 +17,14 @@ public class LoginService {
     ContainerRequestContext context;
 
     @GET
-    public String loginKontrol(@QueryParam("username") String user, @QueryParam("password") String pass) {
+    public String loginControl(@QueryParam("username") String user, @QueryParam("password") String pass) {
         LoginData loginData = new LoginData(user, pass);
         return LoginController.getLoginControllerOBJ().doLogin(loginData);
     }
 
     @GET
     @Path("auth")
-    public String loginKontrol() {
+    public String loginControl() {
         return JWTHandler.validate(context.getHeaderString("Authorization"));
     }
 

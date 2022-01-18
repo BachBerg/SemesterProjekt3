@@ -1,8 +1,6 @@
 package api;
 
 import controller.JWTHandler;
-import model.User;
-
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -25,6 +23,7 @@ public class AuthFilter implements ContainerRequestFilter {
                 if (!containerRequestContext.getHeaderString("Authorization").equals("Bearer hemmeliglogin")) {
                     throw new WebApplicationException("psst hvad er kodeordet?", 401);
                 }
+                /* ellers almindelig kontrol af login token */
             }else {
                 try {
                     String Auth = JWTHandler.validate(containerRequestContext.getHeaderString("Authorization"));

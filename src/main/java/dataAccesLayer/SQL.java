@@ -46,13 +46,13 @@ public class SQL {
         }
     }
 
-    public AftaleListe getAftaleListeDateTime(String fra, String til) throws SQLException {
+    public AftaleListe getAftaleListeDateTime(String from, String to) throws SQLException {
         SQL.getSqlOBJ().makeConnectionSQL();
         AftaleListe aftaleListe = new AftaleListe();
         try {
             PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.aftaler WHERE timestart BETWEEN ? and ?;");
-            pp.setString(1, fra);
-            pp.setString(2, til);
+            pp.setString(1, from);
+            pp.setString(2, to);
 
             ResultSet rs = pp.executeQuery();
 
@@ -76,14 +76,14 @@ public class SQL {
     }
 
 
-    public AftaleListe getAftaleListeDateTimeAndCPR(String fra, String til, String cpr) throws SQLException {
+    public AftaleListe getAftaleListeDateTimeAndCPR(String from, String to, String cpr) throws SQLException {
         SQL.getSqlOBJ().makeConnectionSQL();
         AftaleListe aftaleListe = new AftaleListe();
         try {
             PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.aftaler WHERE cpr = ? and timestart BETWEEN ? and ?;");
             pp.setString(1, cpr);
-            pp.setString(2, fra);
-            pp.setString(3, til);
+            pp.setString(2, from);
+            pp.setString(3, to);
 
             ResultSet rs = pp.executeQuery();
 
@@ -170,12 +170,10 @@ public class SQL {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        System.out.println("henter user obj: " + newUser.getAuth() + " " + newUser.getUsername() + " " + newUser.getPassword());
         return newUser;
     }
 
     public AftaleListe getAftalerIDSearch(String ID) throws SQLException {
-        System.out.println("returnere aftale liste til et id");
         SQL.getSqlOBJ().makeConnectionSQL();
         PreparedStatement pp = myConn.prepareStatement("SELECT * FROM gruppe2DB.aftaler WHERE patientID = ?;");
         AftaleListe aftaleListe = new AftaleListe();
@@ -197,7 +195,6 @@ public class SQL {
             e.printStackTrace();
         }
         SQL.getSqlOBJ().removeConnectionSQL();
-        System.out.println("succes");
         return aftaleListe;
     }
 }

@@ -58,7 +58,6 @@ public class JWTHandler {
 
             user = mapper.convertValue(claims.get("user"), User.class);
 
-            System.out.println("validate: " + user.getUsername()+ " " + user.getAuth() + " " + user.getPassword());
             System.out.println("valideret user:  " + user);
 
         } catch (JwtException e){

@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class ImportService {
 
     @GET
-    public String importerxml(@QueryParam("grp") int grp, @QueryParam("CPR") String cpr) throws SQLException {
+    public String importXml(@QueryParam("grp") int grp, @QueryParam("CPR") String cpr) {
         JSONObject jsonobj;
         switch (grp) {
             case 1: {

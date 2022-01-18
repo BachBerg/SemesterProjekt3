@@ -22,10 +22,10 @@ public class ImportController {
 
         AftaleListe aftaleListe = new AftaleListe();
 
-        JSONArray p = apiDAO.getApiDAOOBJ().getJsonOBJ(http,System.getenv("apiKey")).getJSONObject(liste).getJSONArray(listearray);
+        JSONArray newAftaleList = apiDAO.getApiDAOOBJ().getJsonOBJ(http,System.getenv("apiKey")).getJSONObject(liste).getJSONArray(listearray);
 
-        for (int i = 0; i < p.length(); i++) {
-            aftaleListe.addAftaler(new Gson().fromJson(String.valueOf(p.getJSONObject(i)), Aftale.class));
+        for (int i = 0; i < newAftaleList.length(); i++) {
+            aftaleListe.addAftaler(new Gson().fromJson(String.valueOf(newAftaleList.getJSONObject(i)), Aftale.class));
         }
 
         return aftaleListe;

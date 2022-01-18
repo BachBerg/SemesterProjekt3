@@ -21,11 +21,11 @@ public class LoginController {
     public String doLogin(LoginData loginData) {
         try {
             // sql kald der kontrollere om brugeren eksitere og returnere brugeroplysninger
-            User nyUser = SQL.getSqlOBJ().getUserObjekt(loginData.getUsername());
+            User newUser = SQL.getSqlOBJ().getUserObjekt(loginData.getUsername());
 
             // kontrol af login og generer token
-            if (hashControl(loginData.getPassword(), nyUser.getPassword())) {
-                return JWTHandler.generateJwtToken(nyUser);
+            if (hashControl(loginData.getPassword(), newUser.getPassword())) {
+                return JWTHandler.generateJwtToken(newUser);
             }
         } catch (SQLException e) {
             e.printStackTrace();

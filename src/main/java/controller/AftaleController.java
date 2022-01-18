@@ -1,6 +1,5 @@
 package controller;
 
-import com.google.gson.Gson;
 import dataAccesLayer.SQL;
 import exceptions.OurException;
 import model.Aftale;
@@ -58,7 +57,6 @@ public class AftaleController {
                 aftale.setNotat(note);
                 aftale.setKlinikID("2");
                 aftale.setCPR(cpr);
-                System.out.println(aftale.toString());
                 SQL.getSqlOBJ().insertAftaleSQL(aftale);
                 return "added patient" + aftale;
             } else {
