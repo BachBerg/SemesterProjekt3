@@ -24,7 +24,7 @@ public class apiDAO {
     public String getString(String http, String auth) {
         String s = null;
         try {
-            s = Unirest.get(http).header("Authorization","Bearer" + auth).asString().getBody();
+            s = Unirest.get(http).header("Authorization","Bearer " + auth).asString().getBody();
             return s;
         } catch (UnirestException e) {
             e.printStackTrace();
