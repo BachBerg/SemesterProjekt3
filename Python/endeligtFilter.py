@@ -17,7 +17,7 @@ import wfdb
 # Read the two ECG signals (raw, filtered) and read 
 # the related information.
 #indlæs signalet (råt ufilteret)
-signals, info = wfdb.rdsamp('rec_5', channels=[0, 1], 
+signals, info = wfdb.rdsamp('rec_1', channels=[0, 1], 
                               sampfrom=0, sampto=10000)
 
 
@@ -168,8 +168,8 @@ plt.show()
 
 
 
-
-endpoint = "http://localhost:8080/Semesterprojekt3_war/data/ekgSessions"
+#der hvor data tilsendes
+endpoint = "http://ekg2.diplomportal.dk:8080/data/ekgSessions"
 
 
 cpr= "2222222222" #CPR

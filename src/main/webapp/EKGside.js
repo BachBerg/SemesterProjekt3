@@ -56,7 +56,7 @@ function createSession(data) {
     let cpr = "";
     let note = "";
     // først ryddes feltet hvis der skulle være sessioner fra tidligere søgninger
-    document.getElementById("sessionsfelt").innerHTML = "";
+    document.getElementById("sessionsField").innerHTML = "";
 
     // sessions listen køres igennem og konstruere en button for hver session
     for (let i = 0; i < data.ekgSessionList.length; i++) {
@@ -79,7 +79,7 @@ function createSession(data) {
             getSessionData(btn.getAttribute("session"));
             setNewComment(btn.getAttribute("comment"), btn.getAttribute("session"));
         };
-        document.getElementById("sessionsfelt").appendChild(div);
+        document.getElementById("sessionsField").appendChild(div);
         document.getElementById("div" + i).appendChild(btn);
     }
 }
